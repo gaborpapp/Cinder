@@ -21,6 +21,8 @@
 */
 
 #include <unistd.h>
+#include <X11/XKBlib.h>
+#include <X11/keysym.h>
 
 #include "cinder/app/AppImplLinuxBasic.h"
 #include "cinder/app/AppBasic.h"
@@ -52,7 +54,16 @@ unsigned int AppImplLinuxBasic::prepModifiers( unsigned int state )
 	if( state & Button1Mask ) result |= MouseEvent::LEFT_DOWN;
 	if( state & Button2Mask ) result |= MouseEvent::MIDDLE_DOWN;
 	if( state & Button3Mask ) result |= MouseEvent::RIGHT_DOWN;
+	return result;
+}
 
+unsigned int AppImplLinuxBasic::prepKeyEventModifiers( unsigned int state )
+{
+	unsigned int result = 0;
+	if( state & ShiftMask ) result |= KeyEvent::SHIFT_DOWN;
+	if( state & ControlMask ) result |= KeyEvent::CTRL_DOWN;
+	if( state & Mod1Mask ) result |= KeyEvent::ALT_DOWN;
+	if( state & Mod4Mask ) result |= KeyEvent::META_DOWN;
 	return result;
 }
 
@@ -119,59 +130,89 @@ void AppImplLinuxBasic::run()
 			::XNextEvent( dpy, &xev );
 
 			switch( xev.type ) {
-				case Expose:
-					mWindowWidth = xev.xexpose.width;
-					mWindowHeight = xev.xexpose.height;
-					mApp->privateResize__( ResizeEvent( Vec2i( mWindowWidth, mWindowHeight ) ) );
-					break;
+			case Expose:
+				mWindowWidth = xev.xexpose.width;
+				mWindowHeight = xev.xexpose.height;
+				mApp->privateResize__( ResizeEvent( Vec2i( mWindowWidth, mWindowHeight ) ) );
+				break;
 
-				case ButtonPress:
-					mIsDragging = true;
-					if( xev.xbutton.button == Button1 )
-						mApp->privateMouseDown__( MouseEvent( MouseEvent::LEFT_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					else if( xev.xbutton.button == Button2 )
-						mApp->privateMouseDown__( MouseEvent( MouseEvent::MIDDLE_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					else if( xev.xbutton.button == Button3 )
-						mApp->privateMouseDown__( MouseEvent( MouseEvent::RIGHT_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					break;
+			case ButtonPress:
+				mIsDragging = true;
+				if( xev.xbutton.button == Button1 )
+				   mApp->privateMouseDown__( MouseEvent( MouseEvent::LEFT_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                         prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				else if( xev.xbutton.button == Button2 )
+				   mApp->privateMouseDown__( MouseEvent( MouseEvent::MIDDLE_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                         prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				else if( xev.xbutton.button == Button3 )
+				   mApp->privateMouseDown__( MouseEvent( MouseEvent::RIGHT_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                         prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				break;
 
-				case ButtonRelease:
-					mIsDragging = false;
-					if( xev.xbutton.button == Button1 )
-						mApp->privateMouseUp__( MouseEvent( MouseEvent::LEFT_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					else if( xev.xbutton.button == Button2 )
-						mApp->privateMouseUp__( MouseEvent( MouseEvent::MIDDLE_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					else if( xev.xbutton.button == Button3 )
-						mApp->privateMouseUp__( MouseEvent( MouseEvent::RIGHT_DOWN, xev.xbutton.x, xev.xbutton.y,
-									prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
-					break;
+			case ButtonRelease:
+				mIsDragging = false;
+				if( xev.xbutton.button == Button1 )
+				   mApp->privateMouseUp__( MouseEvent( MouseEvent::LEFT_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                       prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				else if( xev.xbutton.button == Button2 )
+				   mApp->privateMouseUp__( MouseEvent( MouseEvent::MIDDLE_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                       prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				else if( xev.xbutton.button == Button3 )
+				   mApp->privateMouseUp__( MouseEvent( MouseEvent::RIGHT_DOWN, xev.xbutton.x, xev.xbutton.y,
+				                                       prepModifiers( xev.xbutton.state ), 0.0f, xev.xbutton.state ) );
+				break;
+				//Keyevent 
+			case KeyRelease:
+			   {
+				   KeySym keysym = XkbKeycodeToKeysym(dpy,xev.xkey.keycode, 0, 0);
+				   std::string keystring(XKeysymToString(keysym));
+				   if(keystring.size() > 1){
+					   getApp()->privateKeyUp__(
+						   KeyEvent(KeyEvent::translateNativeKeyCode(keysym), static_cast<char>(0),
+						            prepKeyEventModifiers(xev.xkey.state), keysym));
+				   } else {
+					   getApp()->privateKeyUp__(
+						   KeyEvent(KeyEvent::translateNativeKeyCode(keysym), keystring[0],
+						            prepKeyEventModifiers(xev.xkey.state), keysym));
+				   }
+				   break;
+			   }
+			case KeyPress:
+			   {
+				   KeySym keysym =
+				      XkbKeycodeToKeysym(dpy,xev.xkey.keycode, 0, 0);
+				   std::string keystring(XKeysymToString(keysym));
+				   if(keystring.size() > 1){
+					   getApp()->privateKeyDown__(
+						   KeyEvent(KeyEvent::translateNativeKeyCode(keysym), static_cast<char>(0),
+						            prepKeyEventModifiers(xev.xkey.state), keysym));
+				   } else {
+					   getApp()->privateKeyDown__(
+						   KeyEvent(KeyEvent::translateNativeKeyCode(keysym), keystring[0],
+						            prepKeyEventModifiers(xev.xkey.state), keysym));
+				   }
+				   break;
+			   }
+			case MotionNotify:
+				if( mIsDragging ) {
+					mApp->privateMouseDrag__( MouseEvent( 0, xev.xmotion.x, xev.xmotion.y,
+					                                      prepModifiers( xev.xmotion.state ), 0.0f, xev.xmotion.state ) );
+				}
+				else {
+					mApp->privateMouseMove__( MouseEvent( 0, xev.xmotion.x, xev.xmotion.y,
+					                                      prepModifiers( xev.xmotion.state ), 0.0f, xev.xmotion.state ) );
+				}
+				break;
+			case ClientMessage:
+				if ( xev.xclient.data.l[0] == mAtomDeleteWindow )
+				   mShouldQuit = true;
+				break;
 
-				case MotionNotify:
-					if( mIsDragging ) {
-						mApp->privateMouseDrag__( MouseEvent( 0, xev.xmotion.x, xev.xmotion.y,
-									prepModifiers( xev.xmotion.state ), 0.0f, xev.xmotion.state ) );
-					}
-					else {
-						mApp->privateMouseMove__( MouseEvent( 0, xev.xmotion.x, xev.xmotion.y,
-									prepModifiers( xev.xmotion.state ), 0.0f, xev.xmotion.state ) );
-					}
-					break;
-
-				case ClientMessage:
-					if ( xev.xclient.data.l[0] == mAtomDeleteWindow )
-						mShouldQuit = true;
-					break;
-
-				case ResizeRequest:
-					mWindowWidth = xev.xresizerequest.width;
-					mWindowHeight = xev.xresizerequest.height;
-					mApp->privateResize__( ResizeEvent( Vec2i( mWindowWidth, mWindowHeight ) ) );
-					break;
+			case ResizeRequest:
+				mWindowWidth = xev.xresizerequest.width;
+				mWindowHeight = xev.xresizerequest.height;
+				mApp->privateResize__( ResizeEvent( Vec2i( mWindowWidth, mWindowHeight ) ) );
+				break;
 			}
 		}
 	}
@@ -299,7 +340,7 @@ bool AppImplLinuxBasic::createWindow( int *width, int *height )
 	if( ! ( mWnd = ::CreateWindowEx( mWindowExStyle,						// Extended Style For The Window
 		( mFullScreen ) ? FULLSCREEN_WIN_CLASS_NAME : WINDOWED_WIN_CLASS_NAME,
 		unicodeTitle,						// Window Title
-		mWindowStyle,					// Required Window Style
+
 		WindowRect.left, WindowRect.top,								// Window Position
 		WindowRect.right-WindowRect.left,	// Calculate Window Width
 		WindowRect.bottom-WindowRect.top,	// Calculate Window Height
@@ -328,7 +369,6 @@ bool AppImplLinuxBasic::createWindow( int *width, int *height )
 void AppImplLinuxBasic::killWindow( bool wasFullScreen )
 {
 	mApp->getRenderer()->kill();
-
 	XDestroyWindow( getDisplay()->getXDisplay(), mWin );
 
 	/*mApp->getRenderer()->kill();
@@ -352,47 +392,40 @@ void AppImplLinuxBasic::killWindow( bool wasFullScreen )
 
 void AppImplLinuxBasic::toggleFullScreen()
 {
-	/*bool prevFullScreen = mFullScreen;
-	HDC oldDC = mDC;
-	HWND oldWnd = mWnd;
-
+	bool prevFullScreen = mFullScreen;
 	mFullScreen = ! mFullScreen;
-
 	int windowWidth, windowHeight;
 	if( mApp->isFullScreen() ) {
-		windowWidth = mApp->getSettings().getFullScreenWidth();
-		windowHeight = mApp->getSettings().getFullScreenHeight();
+		windowWidth = mDisplay->getWidth();
+		windowHeight = mDisplay->getHeight();
+		mWindowedPos = mWindowOffset;
 	}
 	else {
 		windowWidth = mApp->getSettings().getWindowWidth();
 		windowHeight = mApp->getSettings().getWindowHeight();
 	}
-
-	// prepare for a new one
-	if( prevFullScreen ) {
-		::ChangeDisplaySettings( NULL, 0 );
-	}
-
-	mApp->getRenderer()->prepareToggleFullScreen();
-	createWindow( &windowWidth, &windowHeight );
-	mApp->getRenderer()->finishToggleFullScreen();
-
-	::ReleaseDC( oldWnd, oldDC );
-	::DestroyWindow( oldWnd );
-	if( prevFullScreen )
-		::UnregisterClass( FULLSCREEN_WIN_CLASS_NAME, mInstance );
-	else
-		::UnregisterClass( WINDOWED_WIN_CLASS_NAME, mInstance );
-
+	//TODO: Do we need to call these functions?
+	//mApp->getRenderer()->prepareToggleFullScreen();
+    //mApp->getRenderer()->finishToggleFullScreen();
 	mWindowWidth = windowWidth;
 	mWindowHeight = windowHeight;
-
-	::ShowWindow( mWnd, SW_SHOW );
-	::SetForegroundWindow( mWnd );
-	::SetFocus( mWnd );
-	::DragAcceptFiles( mWnd, TRUE );
-
-	mApp->privateResize__( ResizeEvent( Vec2i( mApp->getWindowWidth(), mApp->getWindowHeight() ) ) );*/
+	mApp->privateResize__(
+		ResizeEvent( Vec2i( mApp->getWindowWidth(),
+		                    mApp->getWindowHeight() ) ) );
+	_XDisplay *dpy = getDisplay()->getXDisplay();
+	XEvent xev;
+	Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
+    Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+	xev.type = ClientMessage;
+	xev.xclient.window = mWin;
+	xev.xclient.message_type = wm_state;
+	xev.xclient.format = 32;
+	xev.xclient.data.l[0] = 2;
+	xev.xclient.data.l[1] = fullscreen;
+	xev.xclient.data.l[2] = 0;
+	XMapWindow(dpy, mWin);
+	XSendEvent(dpy, DefaultRootWindow(dpy), 0,
+	            SubstructureRedirectMask | SubstructureNotifyMask, &xev);
 }
 
 void AppImplLinuxBasic::setWindowWidth( int aWindowWidth )
@@ -414,6 +447,7 @@ float AppImplLinuxBasic::setFrameRate( float aFrameRate )
 {
 	return aFrameRate;
 }
+
 
 /*
 unsigned int prepMouseEventModifiers( WPARAM wParam )
