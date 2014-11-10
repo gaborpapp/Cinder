@@ -24,6 +24,7 @@
 #include "cinder/app/KeyEvent.h"
 
 #include <map>
+#include <iostream>
 using std::map;
 
 namespace cinder {
@@ -327,6 +328,97 @@ int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 	else
 		return sKeyTable[nativeKeyCode];
 }
-#endif // defined( CINDER_MSW )
+
+#elif defined( CINDER_LINUX )
+#include <X11/XKBlib.h>
+#include <X11/keysym.h>
+
+static const struct {
+    KeySym keysym;
+    int scancode;
+} sKeyTable[] = {
+    { XK_Return, KeyEvent::KEY_RETURN },
+    { XK_Escape, KeyEvent::KEY_ESCAPE },
+    { XK_BackSpace, KeyEvent::KEY_BACKSPACE },
+    { XK_Tab, KeyEvent::KEY_TAB },
+    { XK_Caps_Lock, KeyEvent::KEY_CAPSLOCK },
+    { XK_F1, KeyEvent::KEY_F1 },
+    { XK_F2, KeyEvent::KEY_F2 },
+    { XK_F3, KeyEvent::KEY_F3 },
+    { XK_F4, KeyEvent::KEY_F4 },
+    { XK_F5, KeyEvent::KEY_F5 },
+    { XK_F6, KeyEvent::KEY_F6 },
+    { XK_F7, KeyEvent::KEY_F7 },
+    { XK_F8, KeyEvent::KEY_F8 },
+    { XK_F9, KeyEvent::KEY_F9 },
+    { XK_F10, KeyEvent::KEY_F10 },
+    { XK_F11, KeyEvent::KEY_F11 },
+    { XK_F12, KeyEvent::KEY_F12 },
+    { XK_Print, KeyEvent::KEY_PRINT },
+    { XK_Scroll_Lock, KeyEvent::KEY_SCROLLOCK },
+    { XK_Pause, KeyEvent::KEY_PAUSE },
+    { XK_Insert, KeyEvent::KEY_INSERT },
+    { XK_Home, KeyEvent::KEY_HOME },
+    { XK_Prior, KeyEvent::KEY_PAGEUP },
+    { XK_Delete, KeyEvent::KEY_DELETE },
+    { XK_End, KeyEvent::KEY_END },
+    { XK_Next, KeyEvent::KEY_PAGEDOWN },
+    { XK_Right, KeyEvent::KEY_RIGHT },
+    { XK_Left, KeyEvent::KEY_LEFT },
+    { XK_Down, KeyEvent::KEY_DOWN },
+    { XK_Up, KeyEvent::KEY_UP },
+    { XK_Num_Lock, KeyEvent::KEY_NUMLOCK },
+    { XK_KP_Divide, KeyEvent::KEY_KP_DIVIDE },
+    { XK_KP_Multiply, KeyEvent::KEY_KP_MULTIPLY },
+    { XK_KP_Subtract, KeyEvent::KEY_KP_MINUS },
+    { XK_KP_Add, KeyEvent::KEY_KP_PLUS },
+    { XK_KP_Enter, KeyEvent::KEY_KP_ENTER },
+    { XK_KP_Delete, KeyEvent::KEY_KP_PERIOD },
+    { XK_KP_Decimal, KeyEvent::KEY_KP_PERIOD },
+    { XK_KP_1, KeyEvent::KEY_KP1 },
+    { XK_KP_2, KeyEvent::KEY_KP2 },
+    { XK_KP_3, KeyEvent::KEY_KP3 },
+    { XK_KP_4, KeyEvent::KEY_KP4 },
+    { XK_KP_5, KeyEvent::KEY_KP5 },
+    { XK_KP_6, KeyEvent::KEY_KP6 },
+    { XK_KP_7, KeyEvent::KEY_KP7 },
+    { XK_KP_8, KeyEvent::KEY_KP8 },
+    { XK_KP_9, KeyEvent::KEY_KP9 },
+    { XK_KP_0, KeyEvent::KEY_KP0 },
+    { XK_KP_Decimal, KeyEvent::KEY_KP_PERIOD },
+    { XK_KP_Equal, KeyEvent::KEY_KP_EQUALS },
+    { XK_F13, KeyEvent::KEY_F13 },
+    { XK_F14, KeyEvent::KEY_F14 },
+    { XK_F15, KeyEvent::KEY_F15 },
+    { XK_Help, KeyEvent::KEY_HELP },
+    { XK_Menu, KeyEvent::KEY_MENU },
+    { XK_Undo, KeyEvent::KEY_UNDO },
+    { XK_Sys_Req, KeyEvent::KEY_SYSREQ },
+    { XK_Control_L, KeyEvent::KEY_LCTRL },
+    { XK_Shift_L, KeyEvent::KEY_LSHIFT },
+    { XK_Alt_L, KeyEvent::KEY_LALT },
+    { XK_Meta_L, KeyEvent::KEY_LMETA },
+    { XK_Super_L, KeyEvent::KEY_LSUPER },
+    { XK_Control_R, KeyEvent::KEY_RCTRL },
+    { XK_Shift_R, KeyEvent::KEY_RSHIFT },
+    { XK_Alt_R, KeyEvent::KEY_RALT },
+    { XK_Meta_R, KeyEvent::KEY_RMETA },
+    { XK_Super_R, KeyEvent::KEY_RSUPER },
+    { XK_Mode_switch, KeyEvent::KEY_MODE },
+};
 	
+
+int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
+{
+	if (nativeKeyCode >= XK_a && nativeKeyCode <= XK_z) 
+	    return KeyEvent::KEY_a + (nativeKeyCode - KEY_a);
+	unsigned int tableSize = sizeof(sKeyTable)/sizeof(sKeyTable[0]);
+	for (unsigned int i = 0; i < tableSize; ++i) {
+		 if (nativeKeyCode == sKeyTable[i].keysym) {
+	        return sKeyTable[i].scancode;
+        }
+	 }
+	return KeyEvent::KEY_UNKNOWN;
+}
+#endif //CINDER_LINUX	
 } } // namespace cinder::app
