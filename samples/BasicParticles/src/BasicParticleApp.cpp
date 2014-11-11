@@ -65,6 +65,14 @@ void BasicParticleApp::mouseDown( MouseEvent event )
 
 void BasicParticleApp::keyDown( KeyEvent event )
 {
+	if( event.isAltDown() )
+		std::cout << "Alt down" << std::endl;
+	if( event.isShiftDown() )
+	   std::cout << "Shift down"  << std::endl;
+	if( event.isControlDown() )
+	   std::cout << "Control down"  << std::endl;
+	if( event.isMetaDown() )
+	   std::cout << "Meta down" << std::endl;
 	if( event.getChar() == 'f' )
 		setFullScreen( ! isFullScreen() );
 	else if( event.getChar() == 'v' )
@@ -126,6 +134,5 @@ void BasicParticleApp::draw()
 	}
 	glEnd();
 }
-
-
 CINDER_APP_BASIC( BasicParticleApp, RendererGl )
+

@@ -17,11 +17,11 @@ find_package(OpenGL REQUIRED)
 find_package(Boost 1.53 REQUIRED thread system filesystem)
 find_package(ZLIB REQUIRED)
 
-if(!CINDER_LIB-NOTFOUND)
+if(NOT CINDER_LIB-NOTFOUND)
 	add_executable(BasicParticleApp ${SAMPLE_SOURCE})
 	target_link_libraries(BasicParticleApp ${CINDER_LIB} ${Boost_LIBRARIES}
 									   ${OPENGL_LIBRARIES}
 									   ${CURL_LIB}
 									   ${ZLIB_LIBRARIES})
-endif(!CINDER_LIB-NOTFOUND)
+endif(NOT CINDER_LIB-NOTFOUND)
 
