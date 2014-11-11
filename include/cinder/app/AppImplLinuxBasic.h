@@ -53,6 +53,7 @@ class AppImplLinuxBasic : public AppImplLinux {
 	void		killWindow( bool wasFullScreen );
 
 	unsigned int	prepModifiers( unsigned int state );
+	unsigned int    prepKeyEventModifiers( unsigned int state);
 
 	bool		mShouldQuit;
 	bool		mIsDragging;
