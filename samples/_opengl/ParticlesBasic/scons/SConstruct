@@ -1,0 +1,6 @@
+env = Environment()
+
+env['APP_TARGET'] = 'ParticlesBasicApp'
+env['APP_SOURCES'] = ['ParticlesBasicApp.cpp']
+
+SConscript('../../../../scons/SConscript', exports = 'env')

@@ -2,6 +2,6 @@ env = Environment()
 
 env['APP_TARGET'] = 'ObjLoaderApp'
 env['APP_SOURCES'] = ['ObjLoaderApp.cpp']
-env['ASSETS'] = ['8lbs.obj', 'shader.frag', 'shader.vert']
+env['ASSETS'] = ['shader.frag', 'shader.vert']
 
 SConscript('../../../../scons/SConscript', exports = 'env')
