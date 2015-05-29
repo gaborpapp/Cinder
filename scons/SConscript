@@ -137,7 +137,7 @@ env.Replace(LINKFLAGS = Split(LINKFLAGS))
 if platform == 'darwin':
 	env.Append(FRAMEWORKS = Split('Accelerate AppKit ApplicationServices AudioUnit ' + \
 		'AudioToolbox AVFoundation Cocoa CoreAudio CoreData CoreGraphics ' + \
-		'CoreMedia CoreVideo Foundation OpenGl QTKit '))
+		'CoreMedia CoreVideo Foundation OpenGl QTKit IOKit IOSurface '))
 
 	# change compile flags for ObjC files
 	CCFLAGS_OBJC = CFLAGS + ' -x objective-c++ -fvisibility-inlines-hidden ' + \
