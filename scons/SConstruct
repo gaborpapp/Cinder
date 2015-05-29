@@ -42,8 +42,8 @@ CINDERSRC = ['../src/cinder/' + s for s in CINDERSRC]
 CINDERSRC_PARAMS = ['Params.cpp']
 CINDERSRC_PARAMS = ['../src/cinder/params/' + s for s in CINDERSRC_PARAMS]
 
-CINDERSRC_IP = Split('Blend.cpp EdgeDetect.cpp Fill.cpp Flip.cpp Grayscale.cpp ' + \
-		'Hdr.cpp Premultiply.cpp Resize.cpp Threshold.cpp Trim.cpp')
+CINDERSRC_IP = Split('Blend.cpp Checkerboard.cpp EdgeDetect.cpp Fill.cpp ' + \
+		'Flip.cpp Grayscale.cpp Hdr.cpp Premultiply.cpp Resize.cpp Threshold.cpp Trim.cpp')
 CINDERSRC_IP = ['../src/cinder/ip/' + s for s in CINDERSRC_IP]
 
 CINDERSRC_AUDIO = Split('ChannelRouterNode.cpp Context.cpp DelayNode.cpp ' + \
