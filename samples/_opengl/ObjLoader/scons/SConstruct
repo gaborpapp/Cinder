@@ -4,4 +4,10 @@ env['APP_TARGET'] = 'ObjLoaderApp'
 env['APP_SOURCES'] = ['ObjLoaderApp.cpp']
 env['ASSETS'] = ['shader.frag', 'shader.vert']
 
+# workaround for resources outside of project directory
+if env['PLATFORM'] == 'darwin':
+	fout = env['APP_TARGET'] + '.app/Contents/Resources/'
+	fin = Entry('../../../data/models/8lbs.obj').abspath
+	env.Install('#' + fout, fin)
+
 SConscript('../../../../scons/SConscript', exports = 'env')
