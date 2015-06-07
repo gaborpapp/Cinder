@@ -1,0 +1,7 @@
+env = Environment()
+
+env['APP_TARGET'] = 'FboMultipleRenderTargetsApp'
+env['APP_SOURCES'] = ['FboMultipleRenderTargetsApp.cpp']
+env['ASSETS'] = ['multipleOut.frag', 'multipleOut.vert']
+
+SConscript('../../../../scons/SConscript', exports = 'env')
