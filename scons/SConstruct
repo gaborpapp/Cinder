@@ -72,7 +72,7 @@ CINDERSRC_AUDIO = ['../src/cinder/audio/' + s for s in CINDERSRC_AUDIO]
 CINDERSRC_COCOA = Split('CinderCocoa.mm')
 CINDERSRC_COCOA = ['../src/cinder/cocoa/' + s for s in CINDERSRC_COCOA]
 
-CINDERSRC_JSON = Split('json_reader.cpp json_value.cpp json_writer.cpp')
+CINDERSRC_JSON = Split('jsoncpp.cpp')
 CINDERSRC_JSON = ['../src/jsoncpp/' + s for s in CINDERSRC_JSON]
 
 CINDERSRC_QTIME = Split('QuickTime.cpp QuickTimeUtils.cpp MovieWriter.cpp')
@@ -152,9 +152,10 @@ elif platform == 'win32':
 
 INCLUDES = ['../include',
 		'../boost',
-		'../include/rapidxml',
 		'../include/cinder/app',
+		'../include/jsoncpp',
 		'../include/oggvorbis',
+		'../include/rapidxml',
 		'../src/AntTweakBar',
 		'../src/libtess2',
 		'../src/linebreak',
