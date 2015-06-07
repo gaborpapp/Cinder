@@ -22,6 +22,7 @@ Some things to facilitate acceptance of your pull request:
 * Keep the changes as concise as possible. It is best if a pull request addresses a single issue.
 * Follow our style guide as described below.
 * Write clear and concise commit messages.
+* For sample / test code, try to keep binary data to a minimum. For test assets, the folder [samples/data](samples/data) contains some assets you can possibly make use of, or adding new assets there means they can be used by future samples. App icons should also be referenced from this folder, reducing our overall binary weight and also making it easy to update in the future.
 
 In general, we review pull requests first that best adhere to these suggestions.
 
@@ -41,6 +42,7 @@ Please make sure your code conforms to the following general guidelines. If some
 * Use tabs for indentation, with a tab stop value of 4.
 * Anything inside a namespace starts with no indentation.
 * Place spaces between braces, braces and arguments, etc.
+* Place a space between `!` and variables to negate them, ex. `if( ! mEnabled ) { ...`
 * Brackets for class methods and functions begin on a new line. Brackets for everything else (class declarations, if / for / while loops, etc. ) begin on the same line following a space.
 
 #### Types
