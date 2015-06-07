@@ -18,7 +18,7 @@ CINDERSRC = Split('Area.cpp Base64.cpp BSpline.cpp ' + \
 		'Channel.cpp CinderAssert.cpp CinderMath.cpp Clipboard.cpp ConvexHull.cpp Color.cpp ' + \
 		'DataSource.cpp DataTarget.cpp Exception.cpp Frustum.cpp ' + \
 		'GeomIo.cpp ImageIo.cpp ImageSourceFileRadiance.cpp Json.cpp ' + \
-		'Log.cpp Matrix.cpp MatrixStack.cpp ObjLoader.cpp ' + \
+		'Log.cpp Matrix.cpp ObjLoader.cpp ' + \
 		'Path2d.cpp Perlin.cpp Plane.cpp PolyLine.cpp Rand.cpp Ray.cpp Rect.cpp ' + \
 		'Serial.cpp Shape2d.cpp Signals.cpp Sphere.cpp Stream.cpp Surface.cpp System.cpp ' + \
 		'Text.cpp Timer.cpp Triangulate.cpp TriMesh.cpp Url.cpp Xml.cpp ' + \
