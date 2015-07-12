@@ -31,6 +31,7 @@
 #include "cinder/ImageSourceFileWic.h"
 #include "cinder/ImageTargetFileWic.h"
 #include "cinder/ImageSourceFileRadiance.h"
+#include "cinder/ImageFileTinyExr.h"
 
 #include <windows.h>
 #include <Shlwapi.h>
@@ -47,6 +48,8 @@ PlatformMsw::PlatformMsw()
 	ImageSourceFileWic::registerSelf();
 	ImageTargetFileWic::registerSelf();
 	ImageSourceFileRadiance::registerSelf();
+	ImageSourceFileTinyExr::registerSelf();
+	ImageTargetFileTinyExr::registerSelf();
 }
 
 DataSourceRef PlatformMsw::loadResource( const fs::path &resourcePath, int mswID, const std::string &mswType )
@@ -275,7 +278,26 @@ int getMonitorBitsPerPixel( HMONITOR hMonitor )
 
 	return result;
 }
+std::string getMonitorName( HMONITOR hMonitor )
+{
+	MONITORINFOEX mix;
+	memset( &mix, 0, sizeof( MONITORINFOEX ) );
+	mix.cbSize = sizeof( MONITORINFOEX );
+	::GetMonitorInfo( hMonitor, &mix );
+	DISPLAY_DEVICEW dispDev;
+	dispDev.cb = sizeof( DISPLAY_DEVICEW );
+	::EnumDisplayDevicesW( mix.szDevice, 0, &dispDev, 0);
+	return msw::toUtf8String( std::wstring(  dispDev.DeviceString ) );}
 } // anonymous namespace
+
+std::string DisplayMsw::getName() const
+{
+	if( mNameDirty ) {
+		mName = getMonitorName( mMonitor );
+		mNameDirty = false;
+	}
+	return mName;
+}
 
 BOOL CALLBACK DisplayMsw::enumMonitorProc( HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM lParam )
 {
@@ -286,7 +308,7 @@ BOOL CALLBACK DisplayMsw::enumMonitorProc( HMONITOR hMonitor, HDC hdc, LPRECT re
 	newDisplay->mMonitor = hMonitor;
 	newDisplay->mContentScale = 1.0f;
 	newDisplay->mBitsPerPixel = getMonitorBitsPerPixel( hMonitor );
-		
+
 	displaysVector->push_back( DisplayRef( newDisplay ) );
 	return TRUE;
 }
