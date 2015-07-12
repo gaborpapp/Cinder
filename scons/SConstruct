@@ -17,7 +17,7 @@ CINDERSRC = Split('Area.cpp Base64.cpp BSpline.cpp ' + \
 		'BSplineFit.cpp BandedMatrix.cpp Buffer.cpp Camera.cpp CameraUi.cpp ' + \
 		'Channel.cpp CinderAssert.cpp CinderMath.cpp Clipboard.cpp ConvexHull.cpp Color.cpp ' + \
 		'DataSource.cpp DataTarget.cpp Exception.cpp Frustum.cpp ' + \
-		'GeomIo.cpp ImageIo.cpp ImageSourceFileRadiance.cpp Json.cpp ' + \
+		'GeomIo.cpp ImageIo.cpp ImageFileTinyExr.cpp ImageSourceFileRadiance.cpp Json.cpp ' + \
 		'Log.cpp Matrix.cpp ObjLoader.cpp ' + \
 		'Path2d.cpp Perlin.cpp Plane.cpp PolyLine.cpp Rand.cpp Ray.cpp Rect.cpp ' + \
 		'Serial.cpp Shape2d.cpp Signals.cpp Sphere.cpp Stream.cpp Surface.cpp System.cpp ' + \
@@ -42,7 +42,7 @@ CINDERSRC = ['../src/cinder/' + s for s in CINDERSRC]
 CINDERSRC_PARAMS = ['Params.cpp']
 CINDERSRC_PARAMS = ['../src/cinder/params/' + s for s in CINDERSRC_PARAMS]
 
-CINDERSRC_IP = Split('Blend.cpp Checkerboard.cpp EdgeDetect.cpp Fill.cpp ' + \
+CINDERSRC_IP = Split('Blend.cpp Blur.cpp Checkerboard.cpp EdgeDetect.cpp Fill.cpp ' + \
 		'Flip.cpp Grayscale.cpp Hdr.cpp Premultiply.cpp Resize.cpp Threshold.cpp Trim.cpp')
 CINDERSRC_IP = ['../src/cinder/ip/' + s for s in CINDERSRC_IP]
 
@@ -87,7 +87,6 @@ CINDERSRC_GL = Split('Batch.cpp BufferObj.cpp BufferTexture.cpp ConstantConversi
 	'Context.cpp Environment.cpp EnvironmentCore.cpp EnvironmentEs.cpp ' + \
 	'Fbo.cpp GlslProg.cpp Pbo.cpp Query.cpp Shader.cpp ShaderPreprocessor.cpp Sync.cpp Texture.cpp ' + \
 	'TextureFont.cpp TextureFormatParsers.cpp TransformFeedbackObj.cpp ' + \
-	'TransformFeedbackObjImplHardware.cpp TransformFeedbackObjImplSoftware.cpp ' + \
 	'Ubo.cpp Vao.cpp VaoImplCore.cpp VaoImplEs.cpp VaoImplSoftware.cpp Vbo.cpp ' + \
 	'VboMesh.cpp draw.cpp scoped.cpp wrapper.cpp')
 CINDERSRC_GL = ['../src/cinder/gl/' + s for s in CINDERSRC_GL]
@@ -134,6 +133,8 @@ GLLOADSRC = ['../src/glload/' + s for s in GLLOADSRC]
 LINEBREAKSRC = Split('linebreak.c linebreakdata.c linebreakdef.c')
 LINEBREAKSRC = ['../src/linebreak/' + s for s in LINEBREAKSRC]
 
+TINYEXR_SRC = ['../src/tinyexr/tinyexr.cc']
+
 VIDEOINPUTSRC = ['videoInput.cpp']
 VIDEOINPUTSRC = ['../src/videoInput/' + s for s in VIDEOINPUTSRC]
 
@@ -150,7 +151,7 @@ OGGSRC = ['../src/oggvorbis/ogg/' + s for s in OGGSRC]
 CINDER_SOURCES = CINDERSRC + CINDERSRC_PARAMS + \
 		CINDERSRC_IP + CINDERSRC_GL + ANTTWEAKBARSRC + CINDERSRC_JSON + \
 		CINDERSRC_SVG + GLLOADSRC + LIBTESS2SRC + LINEBREAKSRC + CINDERSRC_APP + \
-		VORBISSRC + OGGSRC + R8BRAINSRC + CINDERSRC_AUDIO
+		VORBISSRC + OGGSRC + R8BRAINSRC + CINDERSRC_AUDIO + TINYEXR_SRC
 
 if platform == 'darwin':
 	CINDER_SOURCES += CINDERSRC_COCOA + CINDERSRC_QTIME
@@ -158,10 +159,11 @@ elif platform == 'win32':
 	CINDER_SOURCES += CINDERSRC_MSW + VIDEOINPUTSRC
 
 INCLUDES = ['../include',
-		'../include/rapidxml',
 		'../include/cinder/app',
 		'../include/jsoncpp',
 		'../include/oggvorbis',
+		'../include/rapidxml',
+		'../include/tinyexr',
 		'../src/AntTweakBar',
 		'../src/libtess2',
 		'../src/linebreak',
