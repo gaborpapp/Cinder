@@ -1,0 +1,6 @@
+env = Environment()
+
+env['APP_TARGET'] = 'PBOReadBackApp'
+env['APP_SOURCES'] = ['PBOReadBackApp.cpp']
+
+SConscript('../../../../scons/SConscript', exports = 'env')
