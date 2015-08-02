@@ -132,7 +132,7 @@ env.Append(CCFLAGS = Split(CCFLAGS))
 env.Append(CPPPATH = CPPPATH)
 env.Append(LIBPATH = LIBPATH)
 env.Append(LIBS = LIBS)
-env.Replace(LINKFLAGS = Split(LINKFLAGS))
+env.Append(LINKFLAGS = Split(LINKFLAGS))
 
 if platform == 'darwin':
 	env.Append(FRAMEWORKS = Split('Accelerate AppKit ApplicationServices AudioUnit ' + \
