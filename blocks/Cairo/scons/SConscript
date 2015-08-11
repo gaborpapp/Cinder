@@ -7,7 +7,7 @@ if env['PLATFORM'] == 'darwin':
 _SOURCES = ['Cairo.cpp']
 _SOURCES = [File('../src/' + s).abspath for s in _SOURCES]
 
-_LIBS = ['libcairo.a', 'libpixman-1.a', 'libpng14.a']
+_LIBS = ['libcairo.a', 'libpixman-1.a', 'libpng16.a']
 if env['PLATFORM'] == 'darwin':
 	_LIBS = [Dir('../lib/macosx/').abspath + '/' + s for s in _LIBS]
 else:
