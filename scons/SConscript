@@ -100,9 +100,6 @@ if platform != 'win32':
 		CFLAGS += '-g0 -O3 '
 
 if platform == 'darwin':
-	env['CC'] = 'clang'
-	env['CXX'] = 'clang++'
-
 	CFLAGS += ' -mmacosx-version-min=10.8 ' + \
 		' -fpascal-strings '
 	LINKFLAGS += ' -mmacosx-version-min=10.8 '

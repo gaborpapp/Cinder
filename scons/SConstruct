@@ -206,8 +206,6 @@ else:
 	env.Append(ARFLAGS = ARFLAGS)
 
 if platform == 'darwin':
-	env['CC'] = 'clang'
-	env['CXX'] = 'clang++'
 	CFLAGS += ' -arch i386 -arch x86_64 -mmacosx-version-min=10.8 ' + \
 		' -fpascal-strings '
 	LINKFLAGS += ' -arch i386 -arch x86_64 -mmacosx-version-min=10.8 '
