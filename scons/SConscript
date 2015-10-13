@@ -146,6 +146,9 @@ if platform == 'darwin':
 		'"-DIBOutlet=__attribute__((iboutlet))" ' + \
 		'"-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" ' + \
 		'"-DIBAction=void)__attribute__((ibaction)" '
+	CCFLAGS_OBJC = Split(CCFLAGS_OBJC)
+	if 'CFLAGS' in env:
+		CCFLAGS_OBJC += env['CFLAGS']
 	if 'COMPILE_AS_MM' not in env:
 		env['COMPILE_AS_MM'] = []
 	from os.path import basename
