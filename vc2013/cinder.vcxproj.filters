@@ -507,9 +507,6 @@
     <ClCompile Include="..\src\cinder\audio\msw\ContextWasapi.cpp">
       <Filter>Source Files\audio\msw</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cinder\audio\msw\ContextXAudio.cpp">
-      <Filter>Source Files\audio\msw</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\cinder\audio\msw\DeviceManagerWasapi.cpp">
       <Filter>Source Files\audio\msw</Filter>
     </ClCompile>
@@ -1166,9 +1163,6 @@
     <ClInclude Include="..\include\cinder\audio\Context.h">
       <Filter>Header Files\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\cinder\audio\Debug.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\cinder\audio\DelayNode.h">
       <Filter>Header Files\audio</Filter>
     </ClInclude>
@@ -1260,9 +1254,6 @@
       <Filter>Header Files\audio\dsp\ooura</Filter>
     </ClInclude>
     <ClInclude Include="..\include\cinder\audio\msw\ContextWasapi.h">
-      <Filter>Header Files\audio\msw</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\cinder\audio\msw\ContextXAudio.h">
       <Filter>Header Files\audio\msw</Filter>
     </ClInclude>
     <ClInclude Include="..\include\cinder\audio\msw\DeviceManagerWasapi.h">
