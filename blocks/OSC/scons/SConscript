@@ -2,14 +2,10 @@ Import('env')
 
 _INCLUDES = [Dir('../src').abspath]
 
-_SOURCES = ['OscBundle.cpp', 'OscListener.cpp', 'OscMessage.cpp', 'OscSender.cpp',
-	'ip/IpEndpointName.cpp', 'ip/posix/NetworkingUtils.cpp', 'ip/posix/UdpSocket.cpp',
-	'osc/OscOutboundPacketStream.cpp', 'osc/OscPrintReceivedElements.cpp',
-	'osc/OscReceivedElements.cpp', 'osc/OscTypes.cpp']
+_SOURCES = ['Osc.cpp']
 _SOURCES = [File('../src/' + s).abspath for s in _SOURCES]
 
 env.Append(APP_SOURCES = _SOURCES)
 env.Append(CPPPATH = _INCLUDES)
 
 Return('env')
-

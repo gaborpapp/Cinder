@@ -1,9 +1,8 @@
 env = Environment()
 
-env['APP_TARGET'] = 'OSCSenderApp'
-env['APP_SOURCES'] = ['OSCSenderApp.cpp']
+env['APP_TARGET'] = 'SimpleReceiverApp'
+env['APP_SOURCES'] = ['SimpleReceiverApp.cpp']
 
 env = SConscript('../../../scons/SConscript', exports = 'env')
 
 SConscript('../../../../../scons/SConscript', exports = 'env')
-

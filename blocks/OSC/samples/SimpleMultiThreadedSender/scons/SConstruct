@@ -1,0 +1,8 @@
+env = Environment()
+
+env['APP_TARGET'] = 'SimpleMultiThreadedSenderApp'
+env['APP_SOURCES'] = ['SimpleMultiThreadedSenderApp.cpp']
+
+env = SConscript('../../../scons/SConscript', exports = 'env')
+
+SConscript('../../../../../scons/SConscript', exports = 'env')
