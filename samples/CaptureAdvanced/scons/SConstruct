@@ -1,6 +1,0 @@
-env = Environment()
-
-env['APP_TARGET'] = 'CaptureAdvancedApp'
-env['APP_SOURCES'] = ['CaptureAdvancedApp.cpp']
-
-SConscript('../../../scons/SConscript', exports = 'env')
