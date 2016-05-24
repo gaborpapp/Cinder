@@ -3,7 +3,7 @@ env = Environment()
 env['APP_TARGET'] = 'EarthquakeApp'
 env['APP_SOURCES'] = ['Earth.cpp', 'EarthquakeApp.cpp', 'POV.cpp', 'Quake.cpp']
 env['RESOURCES'] = ['earthDiffuse.png', 'earthMask.png', 'earthNormal.png',
-	'earth_frag.glsl', 'passThru_vert.glsl', 'quake_frag.glsl', 'quake_vert.glsl',
+	'earth.frag', 'earth.vert', 'quake.frag', 'quake.vert',
 	'stars.jpg', 'stars.png']
 
 SConscript('../../../scons/SConscript', exports = 'env')
