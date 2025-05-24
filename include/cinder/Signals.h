@@ -383,7 +383,7 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 			}
 
 			for( SignalLink *link = this->mNext ? this->mNext : this; link != this; link = link->mNext ) {
-				if( callback == link->function ) {
+				if( callback == link->mCallbackFn ) {
 					link->unlink();		// deactivate and unlink sibling
 					return true;
 				}
