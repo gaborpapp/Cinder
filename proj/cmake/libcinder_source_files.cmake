@@ -415,26 +415,29 @@ if( NOT CINDER_FREETYPE_USE_SYSTEM )
 
 endif() # ! CINDER_FREETYPE_USE_SYSTEM
 
-list( APPEND SRC_SET_ZLIB
-	${CINDER_SRC_DIR}/zlib/adler32.c
-	${CINDER_SRC_DIR}/zlib/compress.c
-	${CINDER_SRC_DIR}/zlib/crc32.c
-	${CINDER_SRC_DIR}/zlib/deflate.c
-	${CINDER_SRC_DIR}/zlib/gzclose.c
-	${CINDER_SRC_DIR}/zlib/gzlib.c
-	${CINDER_SRC_DIR}/zlib/gzread.c
-	${CINDER_SRC_DIR}/zlib/gzwrite.c
-	${CINDER_SRC_DIR}/zlib/infback.c
-	${CINDER_SRC_DIR}/zlib/inffast.c
-	${CINDER_SRC_DIR}/zlib/inflate.c
-	${CINDER_SRC_DIR}/zlib/inftrees.c
-	${CINDER_SRC_DIR}/zlib/trees.c
-	${CINDER_SRC_DIR}/zlib/uncompr.c
-	${CINDER_SRC_DIR}/zlib/zutil.c
-)
+if( NOT CINDER_ZLIB_USE_SYSTEM )
+	list( APPEND SRC_SET_ZLIB
+		${CINDER_SRC_DIR}/zlib/adler32.c
+		${CINDER_SRC_DIR}/zlib/compress.c
+		${CINDER_SRC_DIR}/zlib/crc32.c
+		${CINDER_SRC_DIR}/zlib/deflate.c
+		${CINDER_SRC_DIR}/zlib/gzclose.c
+		${CINDER_SRC_DIR}/zlib/gzlib.c
+		${CINDER_SRC_DIR}/zlib/gzread.c
+		${CINDER_SRC_DIR}/zlib/gzwrite.c
+		${CINDER_SRC_DIR}/zlib/infback.c
+		${CINDER_SRC_DIR}/zlib/inffast.c
+		${CINDER_SRC_DIR}/zlib/inflate.c
+		${CINDER_SRC_DIR}/zlib/inftrees.c
+		${CINDER_SRC_DIR}/zlib/trees.c
+		${CINDER_SRC_DIR}/zlib/uncompr.c
+		${CINDER_SRC_DIR}/zlib/zutil.c
+	)
 
-list( APPEND CINDER_SRC_FILES           ${SRC_SET_ZLIB}	)
-source_group( "thirdparty\\zlib" FILES  ${SRC_SET_ZLIB} )
+	list( APPEND CINDER_SRC_FILES           ${SRC_SET_ZLIB}	)
+	source_group( "thirdparty\\zlib" FILES  ${SRC_SET_ZLIB} )
+
+endif() # ! CINDER_ZLIB_USE_SYSTEM
 
 # ----------------------------------------------------------------------------------------------------------------------
 # r8brain
