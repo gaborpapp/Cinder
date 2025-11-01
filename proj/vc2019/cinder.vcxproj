@@ -236,7 +236,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -264,7 +264,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CINDER_SHARED_BUILD;JSON_DLL_BUILD;WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -302,7 +302,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;CINDER_GL_ANGLE;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -330,7 +330,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -358,7 +358,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CINDER_SHARED_BUILD;JSON_DLL_BUILD;WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -391,7 +391,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;CINDER_GL_ANGLE;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -421,7 +421,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -451,7 +451,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CINDER_SHARED_BUILD;JSON_DLL_BUILD;WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -487,7 +487,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\blocks\QuickTime\include\msw;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;CINDER_GL_ANGLE;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -517,7 +517,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -547,7 +547,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CINDER_SHARED_BUILD;JSON_DLL_BUILD;WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -582,7 +582,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\AntTweakBar;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\..\include;..\..\include\imgui;..\..\include\msw\png;..\..\include\msw;..\..\include\oggvorbis;..\..\src\libtess2;..\..\src\linebreak;..\..\src\r8brain;..\..\include\ANGLE;..\..\include\tinyexr;..\..\src\zlib;..\..\include\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);CINDER_GL_ANGLE;FT2_BUILD_LIBRARY=1;FT_DEBUG_LEVEL_TRACE=1</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -607,9 +607,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\AntTweakBar\LoadOGLCore.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwDirect3D11.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwOpenGLCore.cpp" />
     <ClCompile Include="..\..\src\cinder\app\AppBase.cpp" />
     <ClCompile Include="..\..\src\cinder\app\AppScreenSaver.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
@@ -628,67 +625,18 @@
     <ClCompile Include="..\..\src\cinder\app\msw\AppMsw.cpp" />
     <ClCompile Include="..\..\src\cinder\app\msw\PlatformMsw.cpp" />
     <ClCompile Include="..\..\src\cinder\app\msw\RendererImpl2dGdi.cpp" />
-    <ClCompile Include="..\..\src\cinder\app\msw\RendererImplGlAngle.cpp" />
+    <ClCompile Include="..\..\src\cinder\app\msw\RendererImplGlAngle.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\cinder\app\msw\RendererImplGlMsw.cpp" />
     <ClCompile Include="..\..\src\cinder\app\Platform.cpp" />
     <ClCompile Include="..\..\src\cinder\app\RendererGl.cpp" />
     <ClCompile Include="..\..\src\cinder\app\Window.cpp" />
-    <ClCompile Include="..\..\src\cinder\app\winrt\AppImplWinRT.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cinder\app\winrt\AppImplWinRTBasic.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cinder\app\winrt\PlatformWinRt.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cinder\app\winrt\WinRTApp.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\cinder\Area.cpp" />
     <ClCompile Include="..\..\src\cinder\audio\ChannelRouterNode.cpp" />
     <ClCompile Include="..\..\src\cinder\audio\Context.cpp">
@@ -754,6 +702,7 @@
     <ClCompile Include="..\..\src\cinder\Buffer.cpp" />
     <ClCompile Include="..\..\src\cinder\Camera.cpp" />
     <ClCompile Include="..\..\src\cinder\CameraUi.cpp" />
+    <ClCompile Include="..\..\src\cinder\CanvasUi.cpp" />
     <ClCompile Include="..\..\src\cinder\Capture.cpp" />
     <ClCompile Include="..\..\src\cinder\CaptureImplDirectShow.cpp" />
     <ClCompile Include="..\..\src\cinder\Channel.cpp" />
@@ -812,6 +761,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\cinder\ImageTargetFileStbImage.cpp" />
+    <ClCompile Include="..\..\src\cinder\ImageSourceFileQoi.cpp" />
+    <ClCompile Include="..\..\src\cinder\ImageTargetFileQoi.cpp" />
     <ClCompile Include="..\..\src\cinder\ImageTargetFileWic.cpp" />
     <ClCompile Include="..\..\src\cinder\ip\Blend.cpp" />
     <ClCompile Include="..\..\src\cinder\CinderMath.cpp" />
@@ -822,7 +773,7 @@
     <ClCompile Include="..\..\src\cinder\Matrix.cpp" />
     <ClCompile Include="..\..\src\cinder\MediaTime.cpp" />
     <ClCompile Include="..\..\src\cinder\ObjLoader.cpp" />
-    <ClCompile Include="..\..\src\cinder\Path2D.cpp" />
+    <ClCompile Include="..\..\src\cinder\Path2d.cpp" />
     <ClCompile Include="..\..\src\cinder\Perlin.cpp" />
     <ClCompile Include="..\..\src\cinder\Plane.cpp" />
     <ClCompile Include="..\..\src\cinder\PolyLine.cpp" />
@@ -863,14 +814,6 @@
     <ClCompile Include="..\..\src\cinder\msw\CinderMsw.cpp" />
     <ClCompile Include="..\..\src\cinder\msw\CinderMswGdiPlus.cpp" />
     <ClCompile Include="..\..\src\cinder\msw\StackWalker.cpp" />
-    <ClCompile Include="..\..\src\cinder\params\Params.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\LoadOGL.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwBar.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwColors.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwFonts.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwMgr.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwOpenGL.cpp" />
-    <ClCompile Include="..\..\src\AntTweakBar\TwPrecomp.cpp" />
     <ClCompile Include="..\..\src\freetype\autofit\autofit.c" />
     <ClCompile Include="..\..\src\freetype\base\ftbase.c" />
     <ClCompile Include="..\..\src\freetype\base\ftbbox.c" />
@@ -915,16 +858,20 @@
     <ClCompile Include="..\..\src\freetype\type42\type42.c" />
     <ClCompile Include="..\..\src\freetype\winfonts\winfnt.c" />
     <ClCompile Include="..\..\src\glad\glad.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\glad\glad_es.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Shared|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Shared|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ANGLE|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\glad\glad_wgl.c" />
     <ClCompile Include="..\..\src\imgui\imgui.cpp" />
@@ -933,6 +880,7 @@
     <ClCompile Include="..\..\src\imgui\imgui_freetype.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\src\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="..\..\src\libtess2\bucketalloc.c" />
@@ -983,8 +931,6 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_ANGLE|x64'">$(IntDir)\vorbis_window.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\src\r8brain\r8bbase.cpp" />
-    <ClCompile Include="..\..\src\tinyexr\tinyexr.cc" />
-    <ClCompile Include="..\..\src\videoInput\videoInput.cpp" />
     <ClCompile Include="..\..\src\zlib\adler32.c" />
     <ClCompile Include="..\..\src\zlib\compress.c" />
     <ClCompile Include="..\..\src\zlib\crc32.c" />
@@ -1025,10 +971,6 @@
     <ClInclude Include="..\..\include\cinder\app\RendererGl.h" />
     <ClInclude Include="..\..\include\cinder\app\TouchEvent.h" />
     <ClInclude Include="..\..\include\cinder\app\Window.h" />
-    <ClInclude Include="..\..\include\cinder\app\winrt\AppImplWinRT.h" />
-    <ClInclude Include="..\..\include\cinder\app\winrt\AppImplWinRTBasic.h" />
-    <ClInclude Include="..\..\include\cinder\app\winrt\PlatformWinRt.h" />
-    <ClInclude Include="..\..\include\cinder\app\winrt\WinRTApp.h" />
     <ClInclude Include="..\..\include\cinder\audio\audio.h" />
     <ClInclude Include="..\..\include\cinder\audio\Buffer.h" />
     <ClInclude Include="..\..\include\cinder\audio\ChannelRouterNode.h" />
@@ -1071,6 +1013,7 @@
     <ClInclude Include="..\..\include\cinder\Base64.h" />
     <ClInclude Include="..\..\include\cinder\Breakpoint.h" />
     <ClInclude Include="..\..\include\cinder\CameraUi.h" />
+    <ClInclude Include="..\..\include\cinder\CanvasUi.h" />
     <ClInclude Include="..\..\include\cinder\CaptureImplDirectShow.h" />
     <ClInclude Include="..\..\include\cinder\CinderAssert.h" />
     <ClInclude Include="..\..\include\cinder\CinderImGui.h" />
@@ -1126,6 +1069,8 @@
     <ClInclude Include="..\..\include\cinder\ImageSourceFileRadiance.h" />
     <ClInclude Include="..\..\include\cinder\ImageSourceFileStbImage.h" />
     <ClInclude Include="..\..\include\cinder\ImageTargetFileStbImage.h" />
+    <ClInclude Include="..\..\include\cinder\ImageSourceFileQoi.h" />
+    <ClInclude Include="..\..\include\cinder\ImageTargetFileQoi.h" />
     <ClInclude Include="..\..\include\cinder\ip\Blend.h" />
     <ClInclude Include="..\..\include\cinder\ip\Blur.h" />
     <ClInclude Include="..\..\include\cinder\ip\Checkerboard.h" />
@@ -1249,20 +1194,6 @@
     <ClInclude Include="..\..\include\rapidxml\rapidxml.hpp" />
     <ClInclude Include="..\..\include\rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\include\tinyexr\tinyexr.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\AntPerfTimer.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\AntTweakBar.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\LoadOGL.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\LoadOGLCore.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\resource.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwBar.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwColors.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwDirect3D11.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwFonts.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwGraph.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwMgr.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwOpenGL.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwOpenGLCore.h" />
-    <ClInclude Include="..\..\src\AntTweakBar\TwPrecomp.h" />
     <ClInclude Include="..\..\include\cinder\Arcball.h" />
     <ClInclude Include="..\..\include\cinder\Area.h" />
     <ClInclude Include="..\..\include\cinder\AxisAlignedBox.h" />
@@ -1326,7 +1257,6 @@
     <ClInclude Include="..\..\include\cinder\msw\CinderMsw.h" />
     <ClInclude Include="..\..\include\cinder\msw\CinderMswGdiPlus.h" />
     <ClInclude Include="..\..\include\cinder\msw\OutputDebugStringStream.h" />
-    <ClInclude Include="..\..\include\cinder\params\Params.h" />
     <ClInclude Include="..\..\include\msw\videoInput\videoInput.h" />
     <ClInclude Include="..\..\src\libtess2\bucketalloc.h" />
     <ClInclude Include="..\..\src\libtess2\dict.h" />

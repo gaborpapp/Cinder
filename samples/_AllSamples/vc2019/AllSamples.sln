@@ -18,8 +18,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageHeightField", "..\..\I
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MandelbrotGLSL", "..\..\MandelbrotGLSL\vc2019\MandelbrotGLSL.vcxproj", "{3A382202-321E-4336-BBAA-1DB1E1678ADF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParamsBasic", "..\..\ParamsBasic\vc2019\ParamsBasic.vcxproj", "{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "perlinTest", "..\..\perlinTest\vc2019\perlinTest.vcxproj", "{ECB64D66-2649-4C1A-AC1A-FDD64AB62D94}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDiffusion", "..\..\RDiffusion\vc2019\RDiffusion.vcxproj", "{D746FDE4-6705-4EA6-9793-C68F5868A5C0}"
@@ -324,20 +322,6 @@ Global
 		{3A382202-321E-4336-BBAA-1DB1E1678ADF}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{3A382202-321E-4336-BBAA-1DB1E1678ADF}.Release|x64.ActiveCfg = Release|x64
 		{3A382202-321E-4336-BBAA-1DB1E1678ADF}.Release|x64.Build.0 = Release|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug_ANGLE|Mixed Platforms.ActiveCfg = Debug|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug_ANGLE|Mixed Platforms.Build.0 = Debug|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug_ANGLE|x64.ActiveCfg = Debug|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug|x64.ActiveCfg = Debug|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Debug|x64.Build.0 = Debug|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release_ANGLE|Mixed Platforms.ActiveCfg = Release|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release_ANGLE|Mixed Platforms.Build.0 = Release|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release_ANGLE|x64.ActiveCfg = Release|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release|x64.ActiveCfg = Release|x64
-		{B2EE0762-5BCB-4880-9BE4-1A5B0FD467E8}.Release|x64.Build.0 = Release|x64
 		{ECB64D66-2649-4C1A-AC1A-FDD64AB62D94}.Debug_ANGLE|Mixed Platforms.ActiveCfg = Debug|Win32
 		{ECB64D66-2649-4C1A-AC1A-FDD64AB62D94}.Debug_ANGLE|Mixed Platforms.Build.0 = Debug|Win32
 		{ECB64D66-2649-4C1A-AC1A-FDD64AB62D94}.Debug_ANGLE|x64.ActiveCfg = Debug|x64

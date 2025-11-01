@@ -14,6 +14,7 @@ list( APPEND SRC_SET_CINDER
 	${CINDER_SRC_DIR}/cinder/Buffer.cpp
 	${CINDER_SRC_DIR}/cinder/Camera.cpp
 	${CINDER_SRC_DIR}/cinder/CameraUi.cpp
+	${CINDER_SRC_DIR}/cinder/CanvasUi.cpp
 	${CINDER_SRC_DIR}/cinder/Channel.cpp
 	${CINDER_SRC_DIR}/cinder/CinderAssert.cpp
 	${CINDER_SRC_DIR}/cinder/CinderMath.cpp
@@ -23,7 +24,6 @@ list( APPEND SRC_SET_CINDER
 	${CINDER_SRC_DIR}/cinder/DataTarget.cpp
 	${CINDER_SRC_DIR}/cinder/Display.cpp
 	${CINDER_SRC_DIR}/cinder/Exception.cpp
-	${CINDER_SRC_DIR}/cinder/Filesystem.cpp
 	${CINDER_SRC_DIR}/cinder/FileWatcher.cpp
 	${CINDER_SRC_DIR}/cinder/Font.cpp
 	${CINDER_SRC_DIR}/cinder/Frustum.cpp
@@ -33,6 +33,8 @@ list( APPEND SRC_SET_CINDER
 	${CINDER_SRC_DIR}/cinder/ImageSourceFileRadiance.cpp
 	${CINDER_SRC_DIR}/cinder/ImageSourceFileStbImage.cpp
 	${CINDER_SRC_DIR}/cinder/ImageTargetFileStbImage.cpp
+	${CINDER_SRC_DIR}/cinder/ImageSourceFileQoi.cpp
+	${CINDER_SRC_DIR}/cinder/ImageTargetFileQoi.cpp
 	${CINDER_SRC_DIR}/cinder/Json.cpp
 	${CINDER_SRC_DIR}/cinder/Log.cpp
 	${CINDER_SRC_DIR}/cinder/Matrix.cpp
@@ -64,10 +66,10 @@ list( APPEND SRC_SET_CINDER
 	${CINDER_SRC_DIR}/cinder/Xml.cpp
 )
 
-if( ( NOT CINDER_LINUX ) AND ( NOT CINDER_ANDROID ) )
-	list( APPEND SRC_SET_CINDER
-		${CINDER_SRC_DIR}/cinder/Capture.cpp
-	)
+if( NOT CINDER_ANDROID )
+    list( APPEND SRC_SET_CINDER
+        ${CINDER_SRC_DIR}/cinder/Capture.cpp
+    )
 endif()
 if( ( NOT CINDER_COCOA_TOUCH ) AND ( NOT CINDER_ANDROID ) )
 	list( APPEND SRC_SET_CINDER
@@ -214,13 +216,7 @@ source_group( "cinder\\svg" FILES   ${SRC_SET_CINDER_SVG} )
 # ----------------------------------------------------------------------------------------------------------------------
 # tinyexr
 # ----------------------------------------------------------------------------------------------------------------------
-
-list( APPEND SRC_SET_TINYEXR
-	${CINDER_SRC_DIR}/tinyexr/tinyexr.cc
-)
-
-list( APPEND CINDER_SRC_FILES               ${SRC_SET_TINYEXR} )
-source_group( "thirdparty\\tinyexr" FILES   ${SRC_SET_TINYEXR} )
+# tinyexr is now header-only (v1.0.12), implementation is in ImageFileTinyExr.cpp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # glad
@@ -283,45 +279,13 @@ source_group( "thirdparty\\libtess" FILES   ${SRC_SET_LIBTESS} )
 # libpng
 # ----------------------------------------------------------------------------------------------------------------------
 
-if( PNG_FOUND )
-	list( APPEND SRC_SET_TINYEXR
+# ImageSourcePng: always included on Windows (user must link against libpng to use it)
+# On other platforms, only include if PNG_FOUND
+if( CINDER_MSW OR PNG_FOUND )
+	list( APPEND CINDER_SRC_FILES
 		${CINDER_SRC_DIR}/cinder/ImageSourcePng.cpp
 	)
-
-	list( APPEND CINDER_SRC_FILES ${SRC_SET_TINYEXR} )
-	source_group( "cinder" FILES ${SRC_SET_CINDER_APP} )
-endif()
-
-# ----------------------------------------------------------------------------------------------------------------------
-# cinder::params + AntTweakBar
-# ----------------------------------------------------------------------------------------------------------------------
-
-if( CINDER_ANTTWEAKBAR_ENABLED )
-
-	list( APPEND SRC_SET_CINDER_PARAMS
-		${CINDER_SRC_DIR}/cinder/params/Params.cpp
-	)
-
-	list( APPEND SRC_SET_ANTTWEAKBAR
-		${CINDER_SRC_DIR}/AntTweakBar/TwColors.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwFonts.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/LoadOGL.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/LoadOGLCore.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwBar.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwMgr.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwOpenGL.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwOpenGLCore.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwPrecomp.cpp
-	)
-
-	list( APPEND CINDER_SRC_FILES
-		${SRC_SET_CINDER_PARAMS}
-		${SRC_SET_ANTTWEAKBAR}
-	)
-
-	source_group( "cinder\\params"	            FILES ${SRC_SET_CINDER_PARAMS} )
-	source_group( "thirdparty\\AntTweakBar"	    FILES ${SRC_SET_ANTTWEAKBAR} )
-
+	source_group( "cinder" FILES ${CINDER_SRC_DIR}/cinder/ImageSourcePng.cpp )
 endif()
 
 if( CINDER_IMGUI_ENABLED )
@@ -347,6 +311,7 @@ if( CINDER_IMGUI_ENABLED )
 			${CINDER_SRC_DIR}/imgui/imgui_freetype.cpp
 			${CINDER_SRC_DIR}/imgui/imgui_impl_opengl3.cpp
 			${CINDER_SRC_DIR}/imgui/imgui_stdlib.cpp
+			${CINDER_SRC_DIR}/imgui/imgui_tables.cpp
 			${CINDER_SRC_DIR}/imgui/imgui_widgets.cpp
 		)
 	endif()
@@ -395,6 +360,7 @@ if( NOT CINDER_FREETYPE_USE_SYSTEM )
 		${CINDER_SRC_DIR}/freetype/base/fttype1.c
 		${CINDER_SRC_DIR}/freetype/base/ftwinfnt.c
 		${CINDER_SRC_DIR}/freetype/raster/raster.c
+		${CINDER_SRC_DIR}/freetype/raster/rastpic.c
 		${CINDER_SRC_DIR}/freetype/smooth/smooth.c
 		${CINDER_SRC_DIR}/freetype/autofit/autofit.c
 		${CINDER_SRC_DIR}/freetype/bzip2/ftbzip2.c

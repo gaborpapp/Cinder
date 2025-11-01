@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 set( CMAKE_VERBOSE_MAKEFILE ON )
 
@@ -10,16 +10,24 @@ list( APPEND SRC_SET_GLFW
 	${CINDER_SRC_DIR}/glfw/src/init.c
 	${CINDER_SRC_DIR}/glfw/src/input.c
 	${CINDER_SRC_DIR}/glfw/src/monitor.c
+	${CINDER_SRC_DIR}/glfw/src/platform.c
 	${CINDER_SRC_DIR}/glfw/src/window.c
 	${CINDER_SRC_DIR}/glfw/src/glx_context.c
 	${CINDER_SRC_DIR}/glfw/src/egl_context.c
+	${CINDER_SRC_DIR}/glfw/src/osmesa_context.c
 	${CINDER_SRC_DIR}/glfw/src/x11_init.c
 	${CINDER_SRC_DIR}/glfw/src/x11_monitor.c
 	${CINDER_SRC_DIR}/glfw/src/x11_window.c
 	${CINDER_SRC_DIR}/glfw/src/xkb_unicode.c
 	${CINDER_SRC_DIR}/glfw/src/linux_joystick.c
 	${CINDER_SRC_DIR}/glfw/src/posix_time.c
-	${CINDER_SRC_DIR}/glfw/src/posix_tls.c
+	${CINDER_SRC_DIR}/glfw/src/posix_thread.c
+	${CINDER_SRC_DIR}/glfw/src/posix_module.c
+	${CINDER_SRC_DIR}/glfw/src/posix_poll.c
+	${CINDER_SRC_DIR}/glfw/src/null_init.c
+	${CINDER_SRC_DIR}/glfw/src/null_joystick.c
+	${CINDER_SRC_DIR}/glfw/src/null_monitor.c
+	${CINDER_SRC_DIR}/glfw/src/null_window.c
 	${CINDER_SRC_DIR}/glfw/src/vulkan.c
 )
 
@@ -45,6 +53,7 @@ endif()
 
 if( NOT CINDER_DISABLE_VIDEO )
 	list( APPEND SRC_SET_CINDER_VIDEO_LINUX
+		${CINDER_SRC_DIR}/cinder/CaptureImplGStreamer.cpp
 		${CINDER_SRC_DIR}/cinder/linux/GstPlayer.cpp
 		${CINDER_SRC_DIR}/cinder/linux/Movie.cpp
 	)

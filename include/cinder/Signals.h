@@ -123,9 +123,9 @@ class CI_API Connection {
 	Connection();
 	Connection( const std::shared_ptr<detail::Disconnector> &disconnector, detail::SignalLinkBase *link, int priority );
 	Connection( const Connection &other );
-	Connection( Connection &&other );
+	Connection( Connection &&other ) noexcept;
 	Connection& operator=( const Connection &rhs );
-	Connection& operator=( Connection &&rhs );
+	Connection& operator=( Connection &&rhs ) noexcept;
 
 	//! Disconnects this Connection from the callback chain. \a return true if a disconnection was made, false otherwise.
 	bool disconnect();
@@ -150,9 +150,9 @@ class CI_API ScopedConnection : public Connection, private Noncopyable {
   public:
 	ScopedConnection();
 	~ScopedConnection();
-	ScopedConnection( ScopedConnection &&other );
-	ScopedConnection( Connection &&other );
-	ScopedConnection& operator=( ScopedConnection &&rhs );
+	ScopedConnection( ScopedConnection &&other ) noexcept;
+	ScopedConnection( Connection &&other ) noexcept;
+	ScopedConnection& operator=( ScopedConnection &&rhs ) noexcept;
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -373,22 +373,6 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 			mPrev = link;
 
 			return link;
-		}
-
-		bool deactivate( const CallbackFn &callback )
-		{
-			if( callback == mCallbackFn ) {
-				mCallbackFn = nullptr;	// deactivate static head
-				return true;
-			}
-
-			for( SignalLink *link = this->mNext ? this->mNext : this; link != this; link = link->mNext ) {
-				if( callback == link->mCallbackFn ) {
-					link->unlink();		// deactivate and unlink sibling
-					return true;
-				}
-			}
-			return false;
 		}
 
 		bool removeSibling( SignalLinkBase *sibling ) override

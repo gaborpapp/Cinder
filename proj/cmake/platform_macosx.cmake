@@ -1,10 +1,21 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 set( CINDER_PLATFORM "Cocoa" )
+
+# Build universal binaries for macOS (arm64 + x86_64) to match Xcode default behavior
+if( NOT CMAKE_OSX_ARCHITECTURES )
+	set( CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "macOS architectures" FORCE )
+endif()
+
+# Set minimum deployment target to macOS 10.13
+if( NOT CMAKE_OSX_DEPLOYMENT_TARGET )
+	set( CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "macOS minimum deployment target" FORCE )
+endif()
 
 # append mac specific source files
 list( APPEND SRC_SET_COCOA
 	${CINDER_SRC_DIR}/cinder/CaptureImplAvFoundation.mm
+	${CINDER_SRC_DIR}/cinder/Filesystem.cpp
 	${CINDER_SRC_DIR}/cinder/ImageSourceFileQuartz.cpp
 	${CINDER_SRC_DIR}/cinder/ImageTargetFileQuartz.cpp
 	${CINDER_SRC_DIR}/cinder/UrlImplCocoa.mm
@@ -59,28 +70,6 @@ if( NOT CINDER_DISABLE_VIDEO )
 	)
 
 	list( APPEND CINDER_SOURCES_OBJCPP ${CINDER_SRC_DIR}/cinder/qtime/QuickTimeGlImplAvf.cpp )
-endif()
-
-if( NOT CINDER_DISABLE_ANTTWEAKBAR )
-	list( APPEND CINDER_SOURCES_OBJCPP
-		${CINDER_SRC_DIR}/AntTweakBar/TwColors.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwFonts.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/LoadOGL.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/LoadOGLCore.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwBar.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwMgr.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwOpenGl.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwOpenGLCore.cpp
-		${CINDER_SRC_DIR}/AntTweakBar/TwPrecomp.cpp
-	)
-endif()
-
-if( CINDER_ZLIB_USE_SYSTEM )
-	find_package( ZLIB REQUIRED )
-	list( APPEND CINDER_LIBS_DEPENDS ${ZLIB_LIBRARIES} )
-	list( APPEND CINDER_INCLUDE_SYSTEM_PRIVATE ${ZLIB_INCLUDE_DIR} )
-
-	add_definitions( -DFT_CONFIG_OPTION_SYSTEM_ZLIB )
 endif()
 
 set_source_files_properties( ${CINDER_SOURCES_OBJCPP}
@@ -169,4 +158,3 @@ list( APPEND CINDER_SKIP_SAMPLES
 	_opengl/ParticleSphereCS
 	_opengl/NVidiaComputeParticles
 )
-

@@ -110,17 +110,11 @@ function( ci_make_app )
 		endif()
 	elseif( CINDER_MSW )
 		if( MSVC )
-			# Override the default /MD with /MT
-			foreach(
-				flag_var
-				CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO
-				CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO
-			)
-				if( ${flag_var} MATCHES "/MD" )
-					string( REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}" )
-					set( "${flag_var}" "${${flag_var}}" PARENT_SCOPE )
-				endif()
-			endforeach()
+			# Default to static runtime (/MT) unless user specifies otherwise
+			if( NOT DEFINED CMAKE_MSVC_RUNTIME_LIBRARY )
+				set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
+			endif()
+
 			# Force synchronous PDB writes
 			add_compile_options( /FS )
 			# Force multiprocess compilation
@@ -134,6 +128,36 @@ function( ci_make_app )
 
 	target_include_directories( ${ARG_APP_NAME} PUBLIC ${ARG_INCLUDES} )
 	target_link_libraries( ${ARG_APP_NAME} PUBLIC cinder ${ARG_LIBRARIES} )
+
+	# Determine C++ standard: user override > Cinder's standard > 17
+	if( CMAKE_CXX_STANDARD )
+		set( APP_CXX_STANDARD ${CMAKE_CXX_STANDARD} )
+	elseif( DEFINED CINDER_CXX_STANDARD )
+		set( APP_CXX_STANDARD ${CINDER_CXX_STANDARD} )
+	else()
+		set( APP_CXX_STANDARD 17 )
+	endif()
+
+	if( APP_CXX_STANDARD LESS 17 )
+		message( FATAL_ERROR "Cinder requires C++17 or later. App is configured to use C++${APP_CXX_STANDARD}" )
+	endif()
+
+	target_compile_features( ${ARG_APP_NAME} PUBLIC cxx_std_${APP_CXX_STANDARD} )
+
+	# Determine CXX_EXTENSIONS: inherit from Cinder, or default OFF (prevents "namespace linux" issue)
+	if( DEFINED CMAKE_CXX_EXTENSIONS )
+		set( APP_CXX_EXTENSIONS ${CMAKE_CXX_EXTENSIONS} )
+	elseif( DEFINED CINDER_CXX_EXTENSIONS )
+		set( APP_CXX_EXTENSIONS ${CINDER_CXX_EXTENSIONS} )
+	else()
+		set( APP_CXX_EXTENSIONS OFF )
+	endif()
+
+	set_target_properties( ${ARG_APP_NAME} PROPERTIES
+		CXX_STANDARD ${APP_CXX_STANDARD}
+		CXX_STANDARD_REQUIRED ON
+		CXX_EXTENSIONS ${APP_CXX_EXTENSIONS}
+	)
 
 	if( MSVC )
 		# Ignore Specific Default Libraries for Debug build

@@ -1,10 +1,9 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 set( CINDER_PLATFORM "MSW" )
 
 list( APPEND SRC_SET_MSW
 	${CINDER_SRC_DIR}/cinder/CaptureImplDirectShow.cpp
-	${CINDER_SRC_DIR}/videoInput/videoInput.cpp
 	${CINDER_SRC_DIR}/cinder/msw/CinderMsw.cpp
 	${CINDER_SRC_DIR}/cinder/msw/CinderMswGdiPlus.cpp
 	${CINDER_SRC_DIR}/cinder/msw/StackWalker.cpp
@@ -13,10 +12,6 @@ list( APPEND SRC_SET_MSW
 	${CINDER_SRC_DIR}/cinder/UrlImplWinInet.cpp
 	${CINDER_SRC_DIR}/glad/glad_wgl.c
 )
-
-if( NOT CINDER_DISABLE_ANTTWEAKBAR )
-	list( APPEND SRC_SET_MSW ${CINDER_SRC_DIR}/AntTweakBar/TwDirect3D11.cpp )
-endif()
 
 list( APPEND SRC_SET_APP_MSW
 	# TODO: should these two files be added to "cinder\\app" group?
@@ -102,6 +97,7 @@ source_group( "cinder\\audio\\dsp"	FILES ${SRC_SET_CINDER_AUDIO_DSP} )
 source_group( "cinder\\video\\msw"	FILES ${SRC_SET_VIDEO_MSW} )
 
 list( APPEND CINDER_INCLUDE_SYSTEM_PRIVATE
+	${CINDER_INC_DIR}/msw/png
 	${CINDER_INC_DIR}/msw/zlib
 	${CINDER_INC_DIR}/msw
 )
@@ -110,16 +106,11 @@ list( APPEND CINDER_INCLUDE_SYSTEM_PRIVATE
 list( APPEND CINDER_DEFINES "_LIB;UNICODE;_UNICODE;NOMINMAX;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS" )
 
 if( MSVC )
-	# Override the default /MD with /MT
-	foreach( 
-		flag_var
-		CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO 
-		CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-	)
-		if( ${flag_var} MATCHES "/MD" )
-			string( REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}" )
-		endif()
-	endforeach()
+	# Default to static runtime (/MT) unless user specifies otherwise
+	if( NOT DEFINED CMAKE_MSVC_RUNTIME_LIBRARY )
+		set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
+	endif()
+
 	# Force synchronous PDB writes
 	add_compile_options( /FS )
 	# Force multiprocess compilation

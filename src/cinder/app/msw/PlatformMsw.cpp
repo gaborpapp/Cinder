@@ -32,6 +32,8 @@
 #include "cinder/ImageFileTinyExr.h"
 #include "cinder/ImageSourceFileStbImage.h"
 #include "cinder/ImageTargetFileStbImage.h"
+#include "cinder/ImageSourceFileQoi.h"
+#include "cinder/ImageTargetFileQoi.h"
 
 #include <windows.h>
 #include <Shlwapi.h>
@@ -73,6 +75,8 @@ PlatformMsw::PlatformMsw()
 	ImageTargetFileTinyExr::registerSelf();
 	ImageSourceFileStbImage::registerSelf();
 	ImageTargetFileStbImage::registerSelf();
+	ImageSourceFileQoi::registerSelf();
+	ImageTargetFileQoi::registerSelf();
 }
 
 DataSourceRef PlatformMsw::loadResource( const fs::path &resourcePath, int mswID, const std::string &mswType )
@@ -107,7 +111,7 @@ fs::path PlatformMsw::getOpenFilePath( const fs::path &initialPath, const std::v
 {
 	OPENFILENAMEW ofn;       // common dialog box structure
 	wchar_t szFile[MAX_PATH];       // buffer for file name
-	wchar_t extensionStr[10000];
+	std::vector<wchar_t> extensionStr;  // dynamically sized buffer
 	wchar_t initialPathStr[MAX_PATH];
 
 	// Initialize OPENFILENAME
@@ -120,33 +124,45 @@ fs::path PlatformMsw::getOpenFilePath( const fs::path &initialPath, const std::v
 	// use the contents of szFile to initialize itself.
 	//
 	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = sizeof( szFile );
+	ofn.nMaxFile = MAX_PATH;  // MAX_PATH is character count, not byte count
 	if( extensions.empty() ) {
 		ofn.lpstrFilter = L"All\0*.*\0";
 	}
 	else {
-		size_t offset = 0;
-
-		wcscpy( extensionStr, L"Supported Types" );
-		offset += wcslen( extensionStr ) + 1;
+		// Build extension list for display and pattern
+		std::wstring patternList;
 		for( vector<string>::const_iterator strIt = extensions.begin(); strIt != extensions.end(); ++strIt ) {
-			wcscpy( extensionStr + offset, L"*." );
-			offset += 2;
-			wcscpy( extensionStr + offset, msw::toWideString( *strIt ).c_str() );
-			offset += strIt->length();
-			// append a semicolon to all but the last extensions
+			patternList += L"*.";
+			patternList += msw::toWideString( *strIt );
 			if( strIt + 1 != extensions.end() ) {
-				extensionStr[offset] = L';';
-				offset += 1;
-			}
-			else {
-				extensionStr[offset] = L'\0';
-				offset += 1;
+				patternList += L";";
 			}
 		}
 
-		extensionStr[offset] = 0;
-		ofn.lpstrFilter = extensionStr;
+		// Build description with pattern list shown
+		std::wstring description = L"Supported Types (";
+		description += patternList;
+		description += L")";
+
+		// Calculate required buffer size
+		// Format: "Description (*.ext1;*.ext2)\0*.ext1;*.ext2\0\0"
+		size_t requiredSize = description.length() + 1 + patternList.length() + 1 + 1;
+
+		extensionStr.resize( requiredSize );
+		size_t offset = 0;
+
+		// Add description
+		wcscpy( extensionStr.data(), description.c_str() );
+		offset += description.length() + 1;
+
+		// Add pattern list
+		wcscpy( extensionStr.data() + offset, patternList.c_str() );
+		offset += patternList.length() + 1;
+
+		// Add final null terminator
+		extensionStr[offset] = L'\0';
+
+		ofn.lpstrFilter = extensionStr.data();
 	}
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
@@ -166,7 +182,11 @@ fs::path PlatformMsw::getOpenFilePath( const fs::path &initialPath, const std::v
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 	// Display the Open dialog box.
-	if( ::GetOpenFileNameW( &ofn ) == TRUE ) {
+	setInsideModalLoop( true );
+	BOOL result = ::GetOpenFileNameW( &ofn );
+	setInsideModalLoop( false );
+
+	if( result == TRUE ) {
 		return fs::path( ofn.lpstrFile );
 	}
 	else
@@ -193,18 +213,23 @@ namespace {
 
 fs::path PlatformMsw::getFolderPath( const fs::path &initialPath )
 {
-	string result;
+	fs::path result;
+
+	// Store wide string to ensure it stays alive for SHBrowseForFolder
+	std::wstring initialPathWide = initialPath.wstring();
 
 	::BROWSEINFO bi = { 0 };
-	bi.lParam = reinterpret_cast<LPARAM>( initialPath.wstring().c_str() );
+	bi.lParam = reinterpret_cast<LPARAM>( initialPathWide.c_str() );
 	bi.lpfn = getFolderPathBrowseCallbackProc;
 	bi.lpszTitle = L"Pick a Directory";
+	setInsideModalLoop( true );
 	::LPITEMIDLIST pidl = ::SHBrowseForFolder( &bi );
+	setInsideModalLoop( false );
 	if( pidl ) {
 		// get the name of the folder
-		TCHAR path[MAX_PATH];
+		wchar_t path[MAX_PATH];
 		if( ::SHGetPathFromIDList( pidl, path ) ) {
-			result = msw::toUtf8String( path );
+			result = std::wstring( path );
 		}
 
 		// free memory used
@@ -223,7 +248,7 @@ fs::path PlatformMsw::getSaveFilePath( const fs::path &initialPath, const std::v
 	OPENFILENAMEW ofn;       // common dialog box structure
 	wchar_t szFile[MAX_PATH];       // buffer for file name
 	wchar_t initialPathStr[MAX_PATH];
-	wchar_t extensionStr[10000];
+	std::vector<wchar_t> extensionStr;  // dynamically sized buffer
 
 	// Initialize OPENFILENAME
 	ZeroMemory( &ofn, sizeof(ofn) );
@@ -235,33 +260,45 @@ fs::path PlatformMsw::getSaveFilePath( const fs::path &initialPath, const std::v
 	// use the contents of szFile to initialize itself.
 	//
 	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = sizeof( szFile );
+	ofn.nMaxFile = MAX_PATH;  // MAX_PATH is character count, not byte count
 	if( extensions.empty() ) {
 		ofn.lpstrFilter = L"All\0*.*\0";
 	}
 	else {
-		size_t offset = 0;
-
-		wcscpy( extensionStr, L"Supported Types" );
-		offset += wcslen( extensionStr ) + 1;
+		// Build extension list for display and pattern
+		std::wstring patternList;
 		for( vector<string>::const_iterator strIt = extensions.begin(); strIt != extensions.end(); ++strIt ) {
-			wcscpy( extensionStr + offset, L"*." );
-			offset += 2;
-			wcscpy( extensionStr + offset, msw::toWideString( strIt->c_str() ).c_str() );
-			offset += strIt->length();
-			// append a semicolon to all but the last extensions
+			patternList += L"*.";
+			patternList += msw::toWideString( *strIt );
 			if( strIt + 1 != extensions.end() ) {
-				extensionStr[offset] = L';';
-				offset += 1;
-			}
-			else {
-				extensionStr[offset] = 0;
-				offset += 1;
+				patternList += L";";
 			}
 		}
 
-		extensionStr[offset] = 0;
-		ofn.lpstrFilter = extensionStr;
+		// Build description with pattern list shown
+		std::wstring description = L"Supported Types (";
+		description += patternList;
+		description += L")";
+
+		// Calculate required buffer size
+		// Format: "Description (*.ext1;*.ext2)\0*.ext1;*.ext2\0\0"
+		size_t requiredSize = description.length() + 1 + patternList.length() + 1 + 1;
+
+		extensionStr.resize( requiredSize );
+		size_t offset = 0;
+
+		// Add description
+		wcscpy( extensionStr.data(), description.c_str() );
+		offset += description.length() + 1;
+
+		// Add pattern list
+		wcscpy( extensionStr.data() + offset, patternList.c_str() );
+		offset += patternList.length() + 1;
+
+		// Add final null terminator
+		extensionStr[offset] = L'\0';
+
+		ofn.lpstrFilter = extensionStr.data();
 	}
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
@@ -280,8 +317,12 @@ fs::path PlatformMsw::getSaveFilePath( const fs::path &initialPath, const std::v
 	}
 	ofn.Flags = OFN_SHOWHELP | OFN_OVERWRITEPROMPT;
 
-	// Display the Open dialog box.
-	if( ::GetSaveFileName( &ofn ) == TRUE )
+	// Display the Save dialog box.
+	setInsideModalLoop( true );
+	BOOL result = ::GetSaveFileName( &ofn );
+	setInsideModalLoop( false );
+
+	if( result == TRUE )
 		return fs::path( ofn.lpstrFile );
 	else
 		return fs::path();

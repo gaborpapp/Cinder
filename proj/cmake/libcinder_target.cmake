@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CINDER_PATH}/${CINDER_LIB_DIRECTORY} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CINDER_PATH}/${CINDER_LIB_DIRECTORY} )
@@ -72,65 +72,50 @@ elseif( CINDER_COCOA_TOUCH )
 elseif( CINDER_LINUX )
 endif()
 
-# Check compiler support for enabling c++11 or c++14 or c++17.
+# Enforce the minimum C++ standard Cinder requires.
 if( CINDER_MSW AND MSVC )
-    if( MSVC_VERSION LESS 1800 ) # Older version of Visual Studio
-        message( FATAL_ERROR "Unsupported MSVC version: ${MSVC_VERSION}" )
-    elseif( MSVC_VERSION LESS 1900 ) # Visual Studio 2013
-        set( COMPILER_SUPPORTS_CXX11 true )
-    elseif( MSVC_VERSION LESS 1920 ) # Visual Studio 2015
-        set( COMPILER_SUPPORTS_CXX14 true )
-        set( COMPILER_SUPPORTS_CXX11 true )
-    else() # Visual Studio 2019
-        set( COMPILER_SUPPORTS_CXX17 true )
-        set( COMPILER_SUPPORTS_CXX14 true )
-        set( COMPILER_SUPPORTS_CXX11 true )
+    if( MSVC_VERSION LESS 1920 )
+        message( FATAL_ERROR "Cinder requires Visual Studio 2019 (MSVC 19.20) or newer." )
     endif()
-elseif( CINDER_ANDROID )
-	# Assume true for Android since compiler is Clang 3.8 at minimum
-   	set( COMPILER_SUPPORTS_CXX14 true )
-    set( COMPILER_SUPPORTS_CXX11 true )
-else()
-    include( CheckCXXCompilerFlag )
-    CHECK_CXX_COMPILER_FLAG( "-std=c++17" COMPILER_SUPPORTS_CXX17 )
-    CHECK_CXX_COMPILER_FLAG( "-std=c++14" COMPILER_SUPPORTS_CXX14 )
-    CHECK_CXX_COMPILER_FLAG( "-std=c++11" COMPILER_SUPPORTS_CXX11 )
 endif()
 
-if( COMPILER_SUPPORTS_CXX17 )
-    if( NOT MSVC )
-        set( CINDER_CXX_FLAGS "-std=c++17" )
-    else()
-        set( CINDER_CXX_FLAGS "/std:c++17" )
-    endif()
-elseif( COMPILER_SUPPORTS_CXX14 )
-    if( NOT MSVC )
-        set( CINDER_CXX_FLAGS "-std=c++14" )
-    else()
-        set( CINDER_CXX_FLAGS "/std:c++14")
-    endif()
-elseif( COMPILER_SUPPORTS_CXX11 )
-    if( NOT MSVC )
-        set( CINDER_CXX_FLAGS "-std=c++11" )
-    else()
-        set( CINDER_CXX_FLAGS "/std:c++11")
-    endif()
+# Determine C++ standard for Cinder (default 17, allow user override)
+if( CMAKE_CXX_STANDARD )
+    set( CINDER_CXX_STANDARD ${CMAKE_CXX_STANDARD} )
 else()
-	message( FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has neither C++11 or C++14 or C++17 support. Please use a different C++ compiler." )
+    set( CINDER_CXX_STANDARD 17 )
 endif()
 
-# TODO: it would be nice to the following, but we can't until min required cmake is 3.3
-#target_compile_options( cinder PUBLIC $<$<COMPILE_LANGUAGE:CXX>:${CINDER_CXX_FLAGS}> )
-set( CMAKE_CXX_FLAGS "${CINDER_CXX_FLAGS} ${CMAKE_CXX_FLAGS}" )
-target_compile_options( cinder INTERFACE ${CINDER_CXX_FLAGS} )
+# Validate minimum
+if( CINDER_CXX_STANDARD LESS 17 )
+    message( FATAL_ERROR "Cinder requires C++17 or later. CMAKE_CXX_STANDARD is set to ${CINDER_CXX_STANDARD}" )
+endif()
+
+# Set C++ standard for cinder target
+target_compile_features( cinder PUBLIC cxx_std_${CINDER_CXX_STANDARD} )
+
+# Determine CXX_EXTENSIONS: default OFF (prevents "namespace linux" issue)
+# Only enable if user explicitly sets CMAKE_CXX_EXTENSIONS=ON
+if( DEFINED CMAKE_CXX_EXTENSIONS )
+    set( CINDER_CXX_EXTENSIONS ${CMAKE_CXX_EXTENSIONS} )
+else()
+    set( CINDER_CXX_EXTENSIONS OFF )
+endif()
+
+set_target_properties( cinder PROPERTIES
+    CXX_STANDARD ${CINDER_CXX_STANDARD}
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS ${CINDER_CXX_EXTENSIONS}
+)
 
 # This file will contain all dependencies, includes, definition, compiler flags and so on..
 export( TARGETS cinder FILE ${PROJECT_BINARY_DIR}/${CINDER_LIB_DIRECTORY}/cinderTargets.cmake )
 
 # And this command will generate a file on the ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
 # that applications have to pull in order to link successfully with Cinder and its dependencies.
-# This specific cinderConfig.cmake file will just hold a path to the above mention 
+# This specific cinderConfig.cmake file will just hold a path to the above mention
 # cinderTargets.cmake file which holds the actual info.
+# CINDER_CXX_STANDARD and CINDER_CXX_EXTENSIONS will be substituted into the template
 configure_file( ${CMAKE_CURRENT_LIST_DIR}/modules/cinderConfig.buildtree.cmake.in
     "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/cinderConfig.cmake"
 )

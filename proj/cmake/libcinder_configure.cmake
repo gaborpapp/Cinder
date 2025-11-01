@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 ci_log_v( "Building Cinder for ${CINDER_TARGET}" )
 
@@ -7,6 +7,7 @@ set( CINDER_INC_DIR		"${CINDER_PATH}/include" )
 
 if( NOT CINDER_MSW )
 	add_definitions( -Wfatal-errors )
+	add_definitions( -DHAVE_UNISTD_H )
 endif()
 
 list( APPEND CMAKE_MODULE_PATH ${CINDER_CMAKE_DIR} ${CMAKE_CURRENT_LIST_DIR}/modules )
@@ -50,7 +51,6 @@ endif()
 list( APPEND CINDER_INCLUDE_SYSTEM_PRIVATE
 	${CINDER_INC_DIR}
 	${CINDER_INC_DIR}/oggvorbis
-	${CINDER_SRC_DIR}/AntTweakBar
 )
 
 # find cross-platform packages
@@ -77,13 +77,6 @@ else()
 		${CINDER_INC_DIR}/freetype
 	)
 	list( APPEND CINDER_DEFINES "-DFT2_BUILD_LIBRARY;-DFT_DEBUG_LEVEL_TRACE" )
-endif()
-
-# declare whether AntTweakBar is available (isn't on mobile devices)
-if( CINDER_GL_ES OR CINDER_DISABLE_ANTTWEAKBAR )
-	set( CINDER_ANTTWEAKBAR_ENABLED FALSE )
-else()
-	set( CINDER_ANTTWEAKBAR_ENABLED TRUE )
 endif()
 
 if( CINDER_DISABLE_IMGUI )

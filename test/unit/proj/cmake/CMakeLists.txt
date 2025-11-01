@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 set( CMAKE_VERBOSE_MAKEFILE ON )
 
 project( UnitTests )
@@ -27,6 +27,13 @@ set( SOURCES
 	${UNIT_DIR}/src/audio/RingBufferUnit.cpp
 	${UNIT_DIR}/src/signals/SignalsTest.cpp
 )
+
+# Windows-specific tests for COM smart pointer
+if( MSVC OR WIN32 )
+	list( APPEND SOURCES
+		${UNIT_DIR}/src/ComPtrTest.cpp
+	)
+endif()
 
 ci_make_app(
 	SOURCES     ${SOURCES}
