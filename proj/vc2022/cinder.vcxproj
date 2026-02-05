@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_ANGLE|x64">
@@ -186,7 +186,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>Ws2_32.lib;shlwapi.lib;OpenGL32.lib;wmvcore.lib;Strmiids.lib;Msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;shlwapi.lib;OpenGL32.lib;wmvcore.lib;Strmiids.lib;Msimg32.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\lib\msw\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
@@ -278,7 +278,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>Ws2_32.lib;shlwapi.lib;OpenGL32.lib;wmvcore.lib;Strmiids.lib;Msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;shlwapi.lib;OpenGL32.lib;wmvcore.lib;Strmiids.lib;Msimg32.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\lib\msw\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
@@ -374,6 +374,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\cinder\app\msw\RendererImplGlMsw.cpp" />
+    <ClCompile Include="..\..\src\cinder\app\RendererD3d11.cpp" />
+    <ClCompile Include="..\..\src\cinder\app\RendererD3d12.cpp" />
+    <ClCompile Include="..\..\src\cinder\app\msw\RendererImplD3d11.cpp" />
+    <ClCompile Include="..\..\src\cinder\app\msw\RendererImplD3d12.cpp" />
     <ClCompile Include="..\..\src\cinder\app\Platform.cpp" />
     <ClCompile Include="..\..\src\cinder\app\RendererGl.cpp" />
     <ClCompile Include="..\..\src\cinder\app\Window.cpp" />
@@ -512,6 +516,7 @@
     <ClCompile Include="..\..\src\cinder\MediaTime.cpp" />
     <ClCompile Include="..\..\src\cinder\ObjLoader.cpp" />
     <ClCompile Include="..\..\src\cinder\Path2d.cpp" />
+    <ClCompile Include="..\..\src\cinder\Path2dStroke.cpp" />
     <ClCompile Include="..\..\src\cinder\Perlin.cpp" />
     <ClCompile Include="..\..\src\cinder\Plane.cpp" />
     <ClCompile Include="..\..\src\cinder\PolyLine.cpp" />
@@ -552,6 +557,11 @@
     <ClCompile Include="..\..\src\cinder\msw\CinderMsw.cpp" />
     <ClCompile Include="..\..\src\cinder\msw\CinderMswGdiPlus.cpp" />
     <ClCompile Include="..\..\src\cinder\msw\StackWalker.cpp" />
+    <ClCompile Include="..\..\src\cinder\qtime\QuickTimeImplMsw.cpp" />
+    <ClCompile Include="..\..\src\cinder\qtime\QuickTimeGlImplMsw.cpp" />
+    <ClCompile Include="..\..\src\cinder\qtime\mf\MediaEnginePlayer.cpp" />
+    <ClCompile Include="..\..\src\cinder\qtime\mf\DXGIRenderPath.cpp" />
+    <ClCompile Include="..\..\src\cinder\qtime\mf\WICRenderPath.cpp" />
     <ClCompile Include="..\..\src\freetype\autofit\autofit.c" />
     <ClCompile Include="..\..\src\freetype\base\ftbase.c" />
     <ClCompile Include="..\..\src\freetype\base\ftbbox.c" />
@@ -611,10 +621,10 @@
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_freetype.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="..\..\src\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="..\..\src\libtess2\bucketalloc.c" />
     <ClCompile Include="..\..\src\libtess2\dict.c" />
     <ClCompile Include="..\..\src\libtess2\geom.c" />
@@ -814,6 +824,10 @@
     <ClInclude Include="..\..\include\cinder\MediaTime.h" />
     <ClInclude Include="..\..\include\cinder\Plane.h" />
     <ClInclude Include="..\..\include\cinder\Function.h" />
+    <ClInclude Include="..\..\include\cinder\qtime\QuickTime.h" />
+    <ClInclude Include="..\..\include\cinder\qtime\QuickTimeGl.h" />
+    <ClInclude Include="..\..\include\cinder\qtime\QuickTimeGlImplMsw.h" />
+    <ClInclude Include="..\..\include\cinder\qtime\QuickTimeImplMsw.h" />
     <ClInclude Include="..\..\include\cinder\Signals.h" />
     <ClInclude Include="..\..\include\cinder\svg\Svg.h" />
     <ClInclude Include="..\..\include\cinder\svg\SvgGl.h" />
@@ -916,6 +930,7 @@
     <ClInclude Include="..\..\include\imgui\imgui.h" />
     <ClInclude Include="..\..\include\imgui\imgui_freetype.h" />
     <ClInclude Include="..\..\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\..\include\imgui\imgui_impl_dx12.h" />
     <ClInclude Include="..\..\include\imgui\imgui_internal.h" />
     <ClInclude Include="..\..\include\imgui\imgui_stdlib.h" />
     <ClInclude Include="..\..\include\imgui\imstb_rectpack.h" />

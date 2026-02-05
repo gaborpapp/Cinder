@@ -12,4 +12,12 @@ ci_make_app(
 	SOURCES		${APP_PATH}/src/CameraPerspApp.cpp
 	INCLUDES	${APP_PATH}/include
 	CINDER_PATH ${CINDER_PATH}
+	RESOURCES	${CINDER_PATH}/samples/data/environment_maps/humus_sf.jpg
 )
+
+if( CMAKE_SYSTEM_NAME STREQUAL "Darwin" )
+    add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND plutil -replace NSHighResolutionCapable -bool false
+                "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Info.plist"
+    )
+endif()

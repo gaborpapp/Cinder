@@ -13,5 +13,11 @@ ci_make_app(
 	CINDER_PATH ${CINDER_PATH}
 	SOURCES     ${APP_PATH}/src/ObjLoaderApp.cpp
 	INCLUDES    ${APP_PATH}/include
-	RESOURCES   ${APP_PATH}/../../data/models/8lbs.obj
 )
+
+if( CMAKE_SYSTEM_NAME STREQUAL "Darwin" )
+    add_custom_command( TARGET ObjLoader POST_BUILD
+        COMMAND plutil -replace NSHighResolutionCapable -bool false
+                "$<TARGET_BUNDLE_DIR:ObjLoader>/Contents/Info.plist"
+    )
+endif()

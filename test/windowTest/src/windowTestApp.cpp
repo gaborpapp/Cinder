@@ -40,6 +40,7 @@ class WindowTestApp : public App {
 	void windowClose();
 	void windowMouseDown( MouseEvent &mouseEvt );
 	void displayChange();
+	void windowPostResize();
 
 	bool shouldQuit();
 
@@ -58,7 +59,7 @@ void WindowTestApp::mouseDrag( MouseEvent event )
 void WindowTestApp::prepareSettings( Settings *settings )
 {
 	settings->setPowerManagementEnabled( false );
-	settings->setQuitOnLastWindowCloseEnabled( false );
+	settings->setQuitOnLastWindowCloseEnabled( true );
 //	settings->setFullScreen( true );
 	settings->setWindowSize( 800, 500 );
 	settings->setTitle( "title set from App::Settings" );
@@ -70,6 +71,12 @@ void WindowTestApp::setup()
 {
 	for( auto display : Display::getDisplays() )
 		CI_LOG_V( "display name: '" << display->getName() << "', bounds: " << display->getBounds() );
+
+	// Log OpenGL version information
+	console() << "OpenGL Version: " << glGetString( GL_VERSION ) << std::endl;
+	console() << "GLSL Version: " << glGetString( GL_SHADING_LANGUAGE_VERSION ) << std::endl;
+	console() << "OpenGL Vendor: " << glGetString( GL_VENDOR ) << std::endl;
+	console() << "OpenGL Renderer: " << glGetString( GL_RENDERER ) << std::endl;
 
 	getWindow()->setUserData( new WindowData );
 
@@ -83,13 +90,15 @@ void WindowTestApp::setup()
 	getWindow()->getSignalDraw().connect( std::bind( &WindowTestApp::windowDraw, this ) );
 	getWindow()->getSignalDisplayChange().connect( std::bind( &WindowTestApp::displayChange, this ) );
 	getWindow()->getSignalClose().connect( std::bind( &WindowTestApp::windowClose, this ) );
+	getWindow()->getSignalPostResize().connect( std::bind( &WindowTestApp::windowPostResize, this ) );
 	
-	getSignalDidBecomeActive().connect( [] { CI_LOG_V( "App became active." ); } );
-	getSignalWillResignActive().connect( [] { CI_LOG_V( "App will resign active." ); } );
+	getSignalDidBecomeActive().connect( [this] { console() << "App didBecomeActive signal received" << std::endl; } );
+	getSignalWillResignActive().connect( [this] { console() << "App willResignActive signal received" << std::endl; } );
 }
 
 bool WindowTestApp::shouldQuit()
 {
+	console() << "App shouldQuit() signal received - allowing quit" << std::endl;
 	return true;
 }
 
@@ -127,6 +136,11 @@ void WindowTestApp::windowMove()
 void WindowTestApp::displayChange()
 {
 	CI_LOG_V( "window display changed: " << getWindow()->getDisplay()->getBounds() );
+}
+
+void WindowTestApp::windowPostResize()
+{
+	CI_LOG_V( "PostResize signal fired - window size: " << getWindow()->getSize() );
 }
 
 bool WindowTestApp::mouseDown2( MouseEvent event )
@@ -239,10 +253,17 @@ void WindowTestApp::windowDraw()
 {
 	gl::enableAlphaBlending();
 //	glEnable(GL_MULTISAMPLE_ARB);
-	if( getWindow() == getForegroundWindow() )
+
+	// Draw different background color when resizing
+	if( getWindow()->isResizing() ) {
+		gl::clear( Color( 0.8f, 0.6f, 0.1f ) );  // Yellow/orange when resizing
+	}
+	else if( getWindow() == getForegroundWindow() ) {
 		gl::clear( Color( 0.1f, 0.1f, 0.5f ) );
-	else
+	}
+	else {
 		gl::clear( Color( 0.3f, 0.1f, 0.1f ) );
+	}
 
 	// We'll set the color to an orange color
 	gl::color( 1.0f, 0.5f, 0.25f );
@@ -275,4 +296,4 @@ void WindowTestApp::windowDraw()
 	gl::popMatrices();
 }
 
-CINDER_APP( WindowTestApp, RendererGl, WindowTestApp::prepareSettings )
+CINDER_APP( WindowTestApp, RendererGl( RendererGl::Options() ), WindowTestApp::prepareSettings )

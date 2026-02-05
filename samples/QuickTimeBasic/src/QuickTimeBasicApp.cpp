@@ -34,12 +34,7 @@ class QuickTimeSampleApp : public App {
 
 void QuickTimeSampleApp::setup()
 {
-#if defined( CINDER_ANDROID ) || defined( CINDER_LINUX )
-	fs::path moviePath = getAssetPath( "bbb.mp4" );
-#else
 	fs::path moviePath = getOpenFilePath();
-	console() << "moviePath: " << moviePath << std::endl;
-#endif
 	if( ! moviePath.empty() )
 		loadMovieFile( moviePath );
 }
@@ -90,7 +85,7 @@ void QuickTimeSampleApp::update()
 		mFrameTexture = mMovie->getTexture();
 
 	static bool sPrintedDone = false;
-	if( ! sPrintedDone && mMovie->isDone() ) {
+	if( ! sPrintedDone && mMovie && mMovie->isDone() ) {
 		console() << "Done Playing" << std::endl;
 		sPrintedDone = true;
 	}

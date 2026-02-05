@@ -20,3 +20,10 @@ ci_make_app(
 	INCLUDES    ${APP_PATH}/include
 	RESOURCES   ${APP_PATH}/../../data/sound/DrainMagic.ogg
 )
+
+if( CMAKE_SYSTEM_NAME STREQUAL "Darwin" )
+    add_custom_command( TARGET BufferPlayer POST_BUILD
+        COMMAND plutil -replace NSHighResolutionCapable -bool false
+                "$<TARGET_BUNDLE_DIR:BufferPlayer>/Contents/Info.plist"
+    )
+endif()

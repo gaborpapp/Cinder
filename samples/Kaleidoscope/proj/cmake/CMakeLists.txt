@@ -14,4 +14,13 @@ ci_make_app(
 			${APP_PATH}/src/TrianglePiece.cpp
 	INCLUDES	${APP_PATH}/include
 	CINDER_PATH ${CINDER_PATH}
+	RESOURCES	${APP_PATH}/resources/Asap-Regular.ttf
+			${APP_PATH}/resources/Kreon-Bold.ttf
 )
+
+if( CMAKE_SYSTEM_NAME STREQUAL "Darwin" )
+    add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND plutil -replace NSHighResolutionCapable -bool false
+                "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Info.plist"
+    )
+endif()

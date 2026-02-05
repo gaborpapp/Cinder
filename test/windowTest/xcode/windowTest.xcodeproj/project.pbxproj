@@ -10,6 +10,8 @@
 		0007AEEA1B28005A00D627FF /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0007AEE91B28005A00D627FF /* IOKit.framework */; };
 		0007AEEC1B28007C00D627FF /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0007AEEB1B28007C00D627FF /* CoreVideo.framework */; };
 		0007AEEE1B28008100D627FF /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0007AEED1B28008100D627FF /* IOSurface.framework */; };
+		0012D4032EC597D60026B039 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012D4022EC597D60026B039 /* Metal.framework */; };
+		0012D4052EC597EE0026B039 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012D4042EC597EE0026B039 /* QuartzCore.framework */; };
 		004D524819B0038B003ADC36 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 004D524619B0038B003ADC36 /* CoreMedia.framework */; };
 		004D524A19B00397003ADC36 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 004D524919B00396003ADC36 /* AVFoundation.framework */; };
 		0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0091D8F80E81B9330029341E /* OpenGL.framework */; };
@@ -26,6 +28,8 @@
 		0007AEE91B28005A00D627FF /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		0007AEEB1B28007C00D627FF /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0007AEED1B28008100D627FF /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		0012D4022EC597D60026B039 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		0012D4042EC597EE0026B039 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		004D524519B0038B003ADC36 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		004D524619B0038B003ADC36 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		004D524919B00396003ADC36 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -54,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0012D4052EC597EE0026B039 /* QuartzCore.framework in Frameworks */,
+				0012D4032EC597D60026B039 /* Metal.framework in Frameworks */,
 				0007AEEE1B28008100D627FF /* IOSurface.framework in Frameworks */,
 				0007AEEC1B28007C00D627FF /* CoreVideo.framework in Frameworks */,
 				0007AEEA1B28005A00D627FF /* IOKit.framework in Frameworks */,
@@ -146,6 +152,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0012D4042EC597EE0026B039 /* QuartzCore.framework */,
+				0012D4022EC597D60026B039 /* Metal.framework */,
 				0007AEED1B28008100D627FF /* IOSurface.framework */,
 				0007AEEB1B28007C00D627FF /* CoreVideo.framework */,
 				0007AEE91B28005A00D627FF /* IOKit.framework */,
@@ -191,6 +199,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* windowTest */;

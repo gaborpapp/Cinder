@@ -13,3 +13,10 @@ ci_make_app(
 			${APP_PATH}/src/CullableObject.cpp
 	CINDER_PATH ${CINDER_PATH}
 )
+
+if( CMAKE_SYSTEM_NAME STREQUAL "Darwin" )
+    add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND plutil -replace NSHighResolutionCapable -bool false
+                "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Info.plist"
+    )
+endif()

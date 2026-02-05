@@ -7,6 +7,9 @@ option( CINDER_DISABLE_AUDIO "Build Cinder without audio support. " OFF )
 option( CINDER_DISABLE_VIDEO "Build Cinder without video support. " OFF )
 option( CINDER_DISABLE_IMGUI "Build Cinder without imgui support. " OFF )
 
+# ANGLE support (Windows only) - uses OpenGL ES via Direct3D translation
+option( CINDER_GL_ANGLE "Build with ANGLE instead of native OpenGL (Windows only). " OFF )
+
 include( ${CMAKE_CURRENT_LIST_DIR}/utilities.cmake )
 
 # Set default build type to Debug
@@ -21,7 +24,9 @@ endif()
 ci_log_v( "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
 
 # Set default target to build for
-if( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
+if( CMAKE_SYSTEM_NAME MATCHES "iOS" )
+	set( CINDER_TARGET_DEFAULT "ios" )
+elseif( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
 	set( CINDER_TARGET_DEFAULT "macosx" )
 elseif( CMAKE_SYSTEM_NAME MATCHES "Linux" )
 	set( CINDER_TARGET_DEFAULT "linux" )
@@ -87,8 +92,11 @@ if( CINDER_TARGET_GL )
 		set( CINDER_GL_CORE TRUE )
 	endif()
 else()
-	ci_log_v( "No target GL has been set. Defaulting to Core Profile.")
-	set( CINDER_GL_CORE TRUE )
+	# iOS and Android use GL ES, set in their platform files
+	if( NOT CINDER_COCOA_TOUCH AND NOT CINDER_ANDROID )
+		ci_log_v( "No target GL has been set. Defaulting to Core Profile.")
+		set( CINDER_GL_CORE TRUE )
+	endif()
 endif()
 
 
@@ -120,6 +128,12 @@ if( CINDER_LINUX )
 	set( CINDER_TARGET_SUBFOLDER "linux/${CINDER_ARCH}/${CINDER_TARGET_GL}" )
 elseif( CINDER_MAC )
 	set( CINDER_TARGET_SUBFOLDER "macosx" )
+elseif( CINDER_COCOA_TOUCH )
+	if( CMAKE_OSX_SYSROOT MATCHES "[Ss]imulator" )
+		set( CINDER_TARGET_SUBFOLDER "ios-sim" )
+	else()
+		set( CINDER_TARGET_SUBFOLDER "ios" )
+	endif()
 elseif( CINDER_ANDROID )
 	#set( CINDER_ANDROID_NDK_PLATFORM 21 CACHE STRING "Android NDK Platform version number." )
 	#set( CINDER_ANDROID_NDK_ARCH "armeabi-v7a" CACHE STRING "Android NDK target architecture." )

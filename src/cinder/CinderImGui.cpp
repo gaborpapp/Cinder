@@ -1,6 +1,12 @@
 #include "cinder/CinderImGui.h"
 #include "imgui_impl_opengl3.h"
 
+#if defined( CINDER_MSW )
+#include "imgui/imgui_impl_dx12.h"
+#include "cinder/app/RendererD3d12.h"
+#include <d3d12.h>
+#endif
+
 #include "cinder/app/App.h"
 #include "cinder/Log.h"
 #include "cinder/app/Window.h"
@@ -11,7 +17,9 @@
 #include "cinder/Clipboard.h"
 
 #if defined( CINDER_MSW )
-	#include "cinder/app/msw/PlatformMsw.h"
+#include "cinder/app/msw/PlatformMsw.h"
+void initializeD3d12();
+void shutdownD3d12();
 #endif
 
 #include <unordered_map>
@@ -20,6 +28,13 @@ static bool																   sInitialized = false;
 static bool																   sTriggerNewFrame = false;
 static ci::signals::ConnectionList										   sAppConnections;
 static std::unordered_map<ci::app::WindowRef, ci::signals::ConnectionList> sWindowConnections;
+
+// D3D12-specific state
+#if defined( CINDER_MSW )
+static bool																   sUsingD3D12 = false;
+static ID3D12DescriptorHeap*											   sImGuiSrvHeap = nullptr;
+static const UINT														   kImGuiSrvHeapSize = 64;
+#endif
 
 namespace ImGui {
 Options::Options()
@@ -437,7 +452,7 @@ static void ImGui_ImplCinder_MouseWheel( ci::app::MouseEvent& event )
 static void ImGui_ImplCinder_MouseMove( ci::app::MouseEvent& event )
 {
 	ImGuiIO& io = ImGui::GetIO();
-	io.AddMousePosEvent( event.getWindow()->toPixels( event.getPos() ).x, event.getWindow()->toPixels( event.getPos() ).y );
+	io.AddMousePosEvent( (float)event.getWindow()->toPixels( event.getPos() ).x, (float)event.getWindow()->toPixels( event.getPos() ).y );
 	io.AddKeyEvent( ImGuiMod_Ctrl, event.isControlDown() );
 	io.AddKeyEvent( ImGuiMod_Shift, event.isShiftDown() );
 	io.AddKeyEvent( ImGuiMod_Alt, event.isAltDown() );
@@ -448,7 +463,7 @@ static void ImGui_ImplCinder_MouseMove( ci::app::MouseEvent& event )
 static void ImGui_ImplCinder_MouseDrag( ci::app::MouseEvent& event )
 {
 	ImGuiIO& io = ImGui::GetIO();
-	io.AddMousePosEvent( event.getWindow()->toPixels( event.getPos() ).x, event.getWindow()->toPixels( event.getPos() ).y );
+	io.AddMousePosEvent( (float)event.getWindow()->toPixels( event.getPos() ).x, (float)event.getWindow()->toPixels( event.getPos() ).y );
 	io.AddKeyEvent( ImGuiMod_Ctrl, event.isControlDown() );
 	io.AddKeyEvent( ImGuiMod_Shift, event.isShiftDown() );
 	io.AddKeyEvent( ImGuiMod_Alt, event.isAltDown() );
@@ -584,25 +599,17 @@ static void ImGui_ImplCinder_KeyDown( ci::app::KeyEvent& event )
 {
 	ImGuiIO& io = ImGui::GetIO();
 
-#if defined CINDER_LINUX
-	auto character = event.getChar();
-#else
-	uint32_t character = event.getCharUtf32();
-#endif
-
 	ImGuiKey key = CinderKeyToImGuiKey( event.getCode() );
 	if( key != ImGuiKey_None )
 		io.AddKeyEvent( key, true );
-
-	if( ! event.isAccelDown() && character > 0 && character <= 255 ) {
-		io.AddInputCharacter( (char)character );
-	}
 
 	io.AddKeyEvent( ImGuiMod_Ctrl, event.isControlDown() );
 	io.AddKeyEvent( ImGuiMod_Shift, event.isShiftDown() );
 	io.AddKeyEvent( ImGuiMod_Alt, event.isAltDown() );
 	io.AddKeyEvent( ImGuiMod_Super, event.isMetaDown() );
 
+	// Only mark handled if ImGui wants full keyboard capture (not just text input)
+	// This allows global hotkeys to work even when ImGui text field has focus
 	event.setHandled( io.WantCaptureKeyboard );
 }
 
@@ -620,6 +627,28 @@ static void ImGui_ImplCinder_KeyUp( ci::app::KeyEvent& event )
 	io.AddKeyEvent( ImGuiMod_Super, event.isMetaDown() );
 
 	event.setHandled( io.WantCaptureKeyboard );
+}
+
+static void ImGui_ImplCinder_KeyChar( ci::app::KeyEvent& event )
+{
+	ImGuiIO& io = ImGui::GetIO();
+
+	uint32_t character = event.getCharUtf32();
+	if( character > 0 ) {
+		// Handle Unicode characters beyond the Basic Multilingual Plane (BMP)
+		// by converting to UTF-16 surrogate pairs
+		if( character > 0xFFFF ) {
+			character -= 0x10000;
+			io.AddInputCharacterUTF16( static_cast<ImWchar16>( 0xD800 + ( character >> 10 ) ) );
+			io.AddInputCharacterUTF16( static_cast<ImWchar16>( 0xDC00 + ( character & 0x3FF ) ) );
+		}
+		else {
+			io.AddInputCharacterUTF16( static_cast<ImWchar16>( character ) );
+		}
+	}
+
+	// Mark handled if ImGui wants text input or full keyboard capture
+	event.setHandled( io.WantTextInput || io.WantCaptureKeyboard );
 }
 
 static void ImGui_ImplCinder_NewFrameGuard( const ci::app::WindowRef& window );
@@ -704,6 +733,7 @@ static bool ImGui_ImplCinder_Init( const ci::app::WindowRef& window, const ImGui
 	sWindowConnections[window] += window->getSignalMouseWheel().connect( signalPriority, ImGui_ImplCinder_MouseWheel );
 	sWindowConnections[window] += window->getSignalKeyDown().connect( signalPriority, ImGui_ImplCinder_KeyDown );
 	sWindowConnections[window] += window->getSignalKeyUp().connect( signalPriority, ImGui_ImplCinder_KeyUp );
+	sWindowConnections[window] += window->getSignalKeyChar().connect( signalPriority, ImGui_ImplCinder_KeyChar );
 	sWindowConnections[window] += window->getSignalResize().connect( signalPriority, std::bind( ImGui_ImplCinder_Resize, window ) );
 	if( options.isAutoRenderEnabled() ) {
 		sWindowConnections[window] += ci::app::App::get()->getSignalUpdate().connect( std::bind( ImGui_ImplCinder_NewFrameGuard, window ) );
@@ -714,6 +744,15 @@ static bool ImGui_ImplCinder_Init( const ci::app::WindowRef& window, const ImGui
 	sWindowConnections[window] += window->getSignalClose().connect( [=] {
 		sWindowConnections.erase( window );
 		sTriggerNewFrame = false;
+#if defined( CINDER_MSW )
+		// For D3D12, do cleanup on window close while renderer is still valid
+		if( sUsingD3D12 && sInitialized ) {
+			shutdownD3d12();
+			sWindowConnections.clear();
+			ImGui::DestroyContext();
+			sInitialized = false;
+		}
+#endif
 	} );
 
 	return true;
@@ -723,6 +762,57 @@ static void ImGui_ImplCinder_Shutdown()
 {
 	sWindowConnections.clear();
 }
+
+#if defined( CINDER_MSW )
+static bool initializeD3d12( ci::app::RendererD3d12* renderer )
+{
+	sUsingD3D12 = true;
+
+	ID3D12Device* device = renderer->getDevice();
+
+	// Create SRV descriptor heap for ImGui
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
+	heapDesc.NumDescriptors = kImGuiSrvHeapSize;
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	HRESULT hr = device->CreateDescriptorHeap( &heapDesc, IID_PPV_ARGS( &sImGuiSrvHeap ) );
+	if( FAILED( hr ) ) {
+		CI_LOG_E( "Failed to create ImGui SRV descriptor heap" );
+		return false;
+	}
+
+	// Initialize D3D12 backend using legacy single descriptor API
+	ImGui_ImplDX12_InitInfo initInfo = {};
+	initInfo.Device = device;
+	initInfo.CommandQueue = renderer->getCommandQueue();
+	initInfo.NumFramesInFlight = ci::app::RendererD3d12::MaxFrameCount;
+	initInfo.RTVFormat = renderer->getBackBufferFormat();
+	initInfo.SrvDescriptorHeap = sImGuiSrvHeap;
+	initInfo.LegacySingleSrvCpuDescriptor = sImGuiSrvHeap->GetCPUDescriptorHandleForHeapStart();
+	initInfo.LegacySingleSrvGpuDescriptor = sImGuiSrvHeap->GetGPUDescriptorHandleForHeapStart();
+
+	if( ! ImGui_ImplDX12_Init( &initInfo ) ) {
+		CI_LOG_E( "Failed to initialize ImGui D3D12 backend" );
+		sImGuiSrvHeap->Release();
+		sImGuiSrvHeap = nullptr;
+		return false;
+	}
+	return true;
+}
+
+static void shutdownD3d12()
+{
+	auto d3d12Renderer = std::dynamic_pointer_cast<ci::app::RendererD3d12>( ci::app::App::get()->getRenderer() );
+	if( d3d12Renderer )
+		d3d12Renderer->waitForGpu();
+
+	ImGui_ImplDX12_Shutdown();
+	if( sImGuiSrvHeap ) {
+		sImGuiSrvHeap->Release();
+		sImGuiSrvHeap = nullptr;
+	}
+}
+#endif
 
 bool ImGui::Initialize( const ImGui::Options& options )
 {
@@ -753,24 +843,85 @@ bool ImGui::Initialize( const ImGui::Options& options )
 	}
 	io.IniFilename = path.c_str();
 
-#if ! defined( CINDER_GL_ES )
-	ImGui_ImplOpenGL3_Init( "#version 150" );
-#else
-	ImGui_ImplOpenGL3_Init();
+	// Detect renderer type and initialize appropriate backend
+#if defined( CINDER_MSW )
+	auto d3d12Renderer = std::dynamic_pointer_cast<ci::app::RendererD3d12>( ci::app::App::get()->getRenderer() );
+	if( d3d12Renderer ) {
+		if( ! initializeD3d12( d3d12Renderer.get() ) )
+			return false;
+	}
+	else
 #endif
+	{
+		// OpenGL path
+#if ! defined( CINDER_GL_ES )
+		ImGui_ImplOpenGL3_Init( "#version 150" );
+#else
+		ImGui_ImplOpenGL3_Init();
+#endif
+	}
 
-	ImGui_ImplCinder_Init( window, options );
-	if( options.isAutoRenderEnabled() ) {
-		ImGui_ImplCinder_NewFrameGuard( window );
-		sTriggerNewFrame = true;
+	// For D3D12, force auto-render off since apps manage their own command lists
+	ImGui::Options effectiveOptions = options;
+#if defined( CINDER_MSW )
+	if( sUsingD3D12 ) {
+		effectiveOptions.autoRender( false );
+	}
+#endif
+	ImGui_ImplCinder_Init( window, effectiveOptions );
+
+#if defined( CINDER_MSW )
+	if( ! sUsingD3D12 )
+#endif
+	{
+		// Auto-render only supported for OpenGL (D3D12 apps manage their own command lists)
+		if( effectiveOptions.isAutoRenderEnabled() ) {
+			ImGui_ImplCinder_NewFrameGuard( window );
+			sTriggerNewFrame = true;
+		}
 	}
 
 	sAppConnections += ci::app::App::get()->getSignalCleanup().connect( [context]() {
+#if defined( CINDER_MSW )
+		// D3D12 cleanup is handled in window close signal (while renderer is still valid)
+		if( sUsingD3D12 ) {
+			// Already cleaned up in window close, just reset state
+			sInitialized = false;
+			return;
+		}
+#endif
+		// OpenGL cleanup
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplCinder_Shutdown();
 		ImGui::DestroyContext( context );
+		sInitialized = false;
 	} );
 
 	sInitialized = true;
 	return sInitialized;
 }
+
+bool ImGui::IsUsingD3D12()
+{
+#if defined( CINDER_MSW )
+	return sUsingD3D12;
+#else
+	return false;
+#endif
+}
+
+bool ImGui::ShouldSkipFrame()
+{
+#if defined( CINDER_MSW )
+	return static_cast<ci::app::PlatformMsw*>( ci::app::Platform::get() )->isInsideModalLoop();
+#else
+	return false;
+#endif
+}
+
+#if defined( CINDER_MSW )
+ID3D12DescriptorHeap* ImGui::GetD3D12SrvHeap()
+{
+	return sImGuiSrvHeap;
+}
+#endif

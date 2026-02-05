@@ -87,6 +87,11 @@ typedef std::shared_ptr<Window>		WindowRef;
 	namespace cinder { namespace app {
 		class WindowImplMsw;
 	} } // namespace cinder::app
+#elif defined( CINDER_MSW_DESKTOP )
+	friend class AppImplMsw;
+	friend class WindowImplMsw;
+	WindowImplMsw       *getImpl() { return mImpl; }
+	void                 setIsResizing( bool resizing ) { mIsResizing = resizing; }
 #elif defined( CINDER_ANDROID )
 	namespace cinder { namespace app {
   	class WindowImplAndroid;
@@ -391,6 +396,10 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 	EventSignalKey&		getSignalKeyUp() { return mSignalKeyUp; }
 	void				emitKeyUp( KeyEvent *event );
 
+	//! Returns the signal emitted when character input is received. Preferred for text entry.
+	EventSignalKey&		getSignalKeyChar() { return mSignalKeyChar; }
+	void				emitKeyChar( KeyEvent *event );
+
 	EventSignalWindow&	getSignalDraw() { return mSignalDraw; }
 	//! Fires the 'draw' signal. Note in general this should not be called directly as it doesn't perform all necessary setup.
 	void				emitDraw();
@@ -403,6 +412,13 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 
 	EventSignalWindow&	getSignalResize() { return mSignalResize; }
 	void 				emitResize();
+
+	//! Returns the Signal emitted when a resize operation ends. Note: Not supported on Linux.
+	EventSignalWindow&	getSignalPostResize() { return mSignalPostResize; }
+	void				emitPostResize();
+
+	//! Returns whether the Window is currently being resized by the user. Note: Not supported on Linux.
+	bool				isResizing() const { return mIsResizing; }
 
 	EventSignalWindow&	getSignalDisplayChange() { return mSignalDisplayChange; }
 	void				emitDisplayChange();
@@ -428,7 +444,9 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 	
 	//! \cond
 	// This should not be called except by App implementations
-#if defined( CINDER_COCOA ) && defined( __OBJC__ )
+#if defined( CINDER_GLFW )
+	static WindowRef		privateCreate__( class WindowImplGlfw *impl, AppBase *app )
+#elif defined( CINDER_COCOA ) && defined( __OBJC__ )
 	static WindowRef		privateCreate__( id<WindowImplCocoa> impl, AppBase *app )
 #elif defined( CINDER_MSW_DESKTOP )
 	static WindowRef		privateCreate__( WindowImplMsw *impl, AppBase *app )
@@ -441,7 +459,7 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 		WindowRef result( new Window );
 		result->setImpl( impl );
 		result->setApp( app );
-		
+
 		return result;
 	}
 	//! \endcond
@@ -456,10 +474,12 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 			throw ExcInvalidWindow();
 	}
 
-	void		setApp( AppBase *app ) { mApp = app; }	
+	void		setApp( AppBase *app ) { mApp = app; }
 	void		applyCurrentContext();
 
-#if defined( CINDER_COCOA )
+#if defined( CINDER_GLFW )
+	void		setImpl( WindowImplGlfw *impl ) { mImpl = impl; }
+#elif defined( CINDER_COCOA_TOUCH )
   #if defined( __OBJC__ )
 	void		setImpl( id<WindowImplCocoa> impl ) { mImpl = impl; }
   #else
@@ -468,7 +488,7 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 #elif defined( CINDER_MSW_DESKTOP )
 	void		setImpl( WindowImplMsw *impl ) { mImpl = impl; }
 #elif defined( CINDER_LINUX )
-  void    setImpl( WindowImplLinux *impl ) { mImpl = impl; }    
+  void    setImpl( WindowImplLinux *impl ) { mImpl = impl; }
 #endif
 
 	AppBase							*mApp;
@@ -477,11 +497,15 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 	
 	EventSignalMouse		mSignalMouseDown, mSignalMouseDrag, mSignalMouseUp, mSignalMouseWheel, mSignalMouseMove;
 	EventSignalTouch		mSignalTouchesBegan, mSignalTouchesMoved, mSignalTouchesEnded;
-	EventSignalKey			mSignalKeyDown, mSignalKeyUp;
-	EventSignalWindow		mSignalDraw, mSignalPostDraw, mSignalMove, mSignalResize, mSignalDisplayChange, mSignalClose;
+	EventSignalKey			mSignalKeyDown, mSignalKeyUp, mSignalKeyChar;
+	EventSignalWindow		mSignalDraw, mSignalPostDraw, mSignalMove, mSignalResize, mSignalPostResize, mSignalDisplayChange, mSignalClose;
 	EventSignalFileDrop		mSignalFileDrop;
-	
-#if defined( CINDER_COCOA )
+
+	bool					mIsResizing = false;
+
+#if defined( CINDER_GLFW )
+	WindowImplGlfw		*mImpl;
+#elif defined( CINDER_COCOA_TOUCH )
   #if defined( __OBJC__ )
 	id<WindowImplCocoa>		mImpl;
   #else
@@ -494,13 +518,23 @@ class CI_API Window : public std::enable_shared_from_this<Window> {
 #endif
  
 private:
-#if defined( CINDER_ANDROID )
+#if defined( CINDER_GLFW )
+	friend class AppImplGlfw;
+	friend class WindowImplGlfw;
+	WindowImplGlfw      *getImpl() { return mImpl; }
+	void				 setIsResizing( bool resizing ) { mIsResizing = resizing; }
+#elif defined( CINDER_MSW_DESKTOP )
+	friend class AppImplMsw;
+	friend class WindowImplMsw;
+	WindowImplMsw       *getImpl() { return mImpl; }
+	void                 setIsResizing( bool resizing ) { mIsResizing = resizing; }
+#elif defined( CINDER_ANDROID )
 	friend class AppImplAndroid;
 	WindowImplAndroid   *getImpl() { return mImpl; }
 #elif defined( CINDER_LINUX )
 	friend class AppImplLinux;
 	WindowImplLinux     *getImpl() { return mImpl; }
-#endif    
+#endif
 };
 
 } } // namespace cinder::app
